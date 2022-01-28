@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}로그인 / 회원가입 폼 템플릿{% endblock %}
+{% block head %}
+{% endblock %}
+{% block content %}
+
+<head>
+    <!-- width는 30% 면서 min-width는 70% -->
+    <style>
+        *{
+            min-width: 50vw;
+        }
+        body {
+            background-color: beige;
+        }
+
+        /* 메인 컨텐트 */
+        div#main_content {
+            width: 100%;
+            text-align: center;
+            display: block;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 10%;
+            margin-left: 50px;
+        }
+
+        img {
+            width: 50px;
+            background-color: beige;
+        }
+
+        /* 소셜 아이콘
+        div.social-icon {
+            margin: 10px 20px 0px 30px;
+        } */
+
+        a:link {
+            color: black;
+            text-decoration: none;
+        }
+
+        a:visited {
+            color: black;
+            text-decoration: none;
+            
+        }
+        div#temp{
+            border: 1px solid black;
+            width:50vw;
+            position: relative;
+            padding: 30px 10px 10px 10px;
+            left: 20%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="main_content">
+        <div class="mb-3 row" id="temp">
+            <div class ="mb-1">
+                <label for="staticEmail" style="font-weight: bold; font-size: 15px; margin-left: -86%; ">이메일</label>
+            </div>
+            <div>
+                <input type="text" id="staticEmail" style="width:90%; height: 36.5px; padding : 9.75px 13px;">
+            </div>
+            <div class="mb-1">
+                <label for="inputPassword" style="font-weight: bold; font-size: 15px; margin-left: -85%;">패스워드</label>
+            </div>
+            <div>
+                <input type="password" id="inputPassword" style="width:90%; height: 36.5px; padding : 9.75px 13px;">
+            </div>
+            <!-- <div class="social-icon col-sm-10">
+                <img src="{% static 'img/facebook.png' %}" alt="facebook">
+                <img src="{% static 'img/git.png' %}" alt="git">
+                <img src="{% static 'img/kakao.png' %}" alt="kakao">
+            </div> -->
+            <div>
+                <div>
+                    <button type="button"
+                    style="width:90%; height: 36.5px; background-color: rgb(100, 156, 209); border: 0px; margin : 15px 0 15px 0;">로그인</button>
+                </div>
+                <div>
+                    <a href="#"> 빡대가리십니까 ? </a> <br>
+                    <a>회원가입</a>
+                </div>
+            </div>
+        </div>
+    </div>
+        
+    </body>
+
+</html>
+{% endblock %}
