@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}로그인 / 회원가입 폼 템플릿{% endblock %}
+{% block head %}
+{% endblock %}
+{% block content %}
+
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <style>
+        * {
+            min-width: 20vw;
+        }
+
+        body {
+            background-color: rgb(255, 255, 255);
+        }
+
+        /* 메인 컨텐트 */
+        div#main_content {
+            width: 100%;
+            text-align: center;
+            transform: translateY(10%);
+        }
+
+        /* img {
+            width: 50px;
+        } */
+
+        /* 소셜 아이콘
+        div.social-icon {
+            margin: 10px 20px 0px 30px;
+        } */
+
+        a:link {
+            color: black;
+            text-decoration: none;
+        }
+
+        a:visited {
+            color: black;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* 유저 정보(id,password) */
+        div#user_info {
+            border: 1px solid black;
+            border-radius: 10px 10px 10px 10px;
+            position: relative;
+            width: 480px;
+            padding: 30px 10px 10px 10px;
+            display: inline-block;
+        }
+
+        /* 로그인버튼 */
+        button#login_button {
+            width: 90%;
+            height: 36.5px;
+            background-color: rgb(233, 101, 101);
+            border: 0px;
+            margin: 18px 0 10px 0;
+            padding: 5px 5px 5px 5px;
+        }
+        label{
+            text-align: left;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="main_content">
+        <div class="mb-3 row" id="user_info">
+            <div id="main_icon" style="margin-left: -100px; margin-top:-70px">
+                <img src="{% static 'img/night2.png' %}" style="width:100px;">
+            </div>
+            <div class="mb-1">
+                <label for="staticEmail" style="font-weight: bold; font-size: 18px; ">이메일</label>
+            </div>
+            <div>
+                <input type="text" id="staticEmail"
+                    style="width:90%; height: 36.5px; padding : 9.75px 13px; margin-bottom: 2%;">
+            </div>
+            <div class="mb-1">
+                <label for="inputPassword" style="font-weight: bold; font-size: 18px;">패스워드</label>
+            </div>
+            <div>
+                <input type="password" id="inputPassword" style="width:90%; height: 36.5px; padding : 9.75px 13px;">
+            </div>
+            <!-- <div class="social-icon col-sm-10">
+                <img src="{% static 'img/facebook.png' %}" alt="facebook">
+                <img src="{% static 'img/git.png' %}" alt="git">
+                <img src="{% static 'img/kakao.png' %}" alt="kakao">
+            </div> -->
+            <div>
+                <div>
+                    <button type="button" id="login_button">로그인</button>
+                </div>
+                <div style="margin-bottom: 3%;  ">
+                    <a href="#" style="margin-bottom: 3%; color:black; font-size: 15px; margin-left:-260px;"> 빡대가리십니까 ?
+                    </a>
+                </div>
+                <div>
+                    <hr>
+                    <a>계정이 없으십니까?</a> <a href="/register" style="color: red; font-size: 15px;">가입</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+</body>
+
+</html>
+{% endblock %}
