@@ -29,7 +29,7 @@
 
         /* 소셜 아이콘
         div.social-icon {
-            margin: 10px 20px 0px 30px;
+            margin: 10px 18px 0px 30px;
         } */
 
         a:link {
@@ -72,41 +72,25 @@
 </head>
 
 <body>
-
     <div id="main_content">
         <div class="mb-3 row" id="user_info">
             <div id="main_icon" style="margin-left: -100px; margin-top:-70px">
                 <img src="{% static 'img/night2.png' %}" style="width:100px;">
             </div>
             <div class="mb-1">
-                <label for="staticEmail" style="font-weight: bold; font-size: 18px; ">이메일</label>
+                <label for="user_name" style="font-weight: bold; font-size: 18px; ">당신의 이름을 알려주세요 ! </label>
             </div>
             <div>
-                <input type="text" id="staticEmail"
-                    style="width:90%; height: 36.5px; padding : 9.75px 13px; margin-bottom: 2%;">
+                <input type="text" id="user_name" 
+                    style="width:90%; height: 36.5px; padding : 9.75px 13px;">
             </div>
-            <div class="mb-1">
-                <label for="inputPassword" style="font-weight: bold; font-size: 18px;">패스워드</label>
-            </div>
-            <div>
-                <input type="password" id="inputPassword" style="width:90%; height: 36.5px; padding : 9.75px 13px;">
-            </div>
-            <!-- <div class="social-icon col-sm-10">
-                <img src="{% static 'img/facebook.png' %}" alt="facebook">
-                <img src="{% static 'img/git.png' %}" alt="git">
-                <img src="{% static 'img/kakao.png' %}" alt="kakao">
-            </div> -->
-            <div>
+            <div>                               
                 <div>
-                    <button type="button" id="login_button">로그인</button>
-                </div>
-                <div style="margin-bottom: 3%;  ">
-                    <a href="#" style="margin-bottom: 3%; color:black; font-size: 15px; margin-left:-260px;"> 빡대가리십니까 ?
-                    </a>
+                    <button type="button" id="login_button">회원가입 완료</button>
                 </div>
                 <div>
                     <hr>
-                    <a>계정이 없으십니까?</a> <a href="/register" style="color: red; font-size: 15px;">가입</a>
+                    <a>이미 가입하셨습니까?</a> <a href="/home" style="color: red; font-size: 14px;">로그인으로 이동</a>
                 </div>
             </div>
         </div>
