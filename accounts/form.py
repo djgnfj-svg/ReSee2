@@ -1,26 +1,27 @@
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm
 from django import forms
 
 from accounts.models import MyUser
-from ReSee.settings import AUTH_USER_MODEL
+
 class LoginForm(forms.Form):
 	email = forms.EmailField(
 			max_length=100, required=True, widget=forms.EmailInput(attrs={"class" : "input-field", "placeholder": "이메일"})
 	)
-	password = forms.PasswordInput(
+	password = forms.CharField(
 		max_length=30, required=True,
 		widget=forms.PasswordInput(attrs={"class" : "input-field", "placeholder": "패스워드"})
 	)
 
 class RegisterForm(UserCreationForm):
     class Meta:
-        model = AUTH_USER_MODEL
+        model = MyUser
         fields=(
         "username",
         "password1",
         "password2",
         "useremail",
         )
+
         
     username = forms.CharField(
         max_length=30, required=True, widget=forms.TextInput(attrs={"class" : "input-field", "placeholder": "유저이름"})
@@ -42,3 +43,28 @@ class RegisterForm(UserCreationForm):
         if commit:
             user.save()
         return user
+
+class MemberUpdateForm(forms.Form):
+    class Meta:
+        model = MyUser
+        fields = (
+            "useremail"
+        )
+    useremail = forms.EmailField(
+        max_length=30, required=True, widget=forms.EmailInput(attrs={"class" : "input-field", "placeholder": "이메일수정"})
+    )
+
+class MemberDelForm(forms.Form):
+    class Meta:
+        model = MyUser
+        fields = (
+            "useremail",
+            "password",
+        )
+    useremail = forms.EmailField(
+        max_length=30, required=True, widget=forms.EmailInput(attrs={"class" : "input-field", "placeholder": "이메일수정"})
+    )
+    password1 = forms.CharField(
+        max_length=30, required=True, 
+        widget=forms.PasswordInput(attrs={"class" : "input-field", "placeholder": "패스워드"})
+    )

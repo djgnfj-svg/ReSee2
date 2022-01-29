@@ -165,5 +165,6 @@ cython_debug/
 #.idea/
 
 secrets.json
-
+migrations
+migrations/*
 # End of https://www.toptal.com/developers/gitignore/api/django
