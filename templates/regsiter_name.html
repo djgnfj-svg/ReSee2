@@ -6,30 +6,32 @@
 {% block content %}
 
 <body>
-    <div id="main_content">
-        <div class="mb-3 row" id="user_info">
-            <div id="main_icon" style="width: 40%;">
-                <img src="{% static 'img/night2.png' %}" style="width:100px;">
-            </div>
-            <div class="mb-1">
-                <label for="user_name" style="font-weight: bold; font-size: 18px; ">당신의 이름을 알려주세요 ! </label>
-            </div>
-            <div>
-                <input type="text" id="user_name" 
-                    style="width:90%; height: 36.5px; padding : 9.75px 13px;">
-            </div>
-            <div>                               
-                <div>
-                    <button type="button" id="login_button">회원가입 완료</button>
+    <form id="register_name" action="" class="input-group-adon" method="post">
+        <div id="main_content">
+            <div class="mb-3 row" id="user_info">
+                <div id="main_icon" style="width: 40%;">
+                    <img src="{% static 'img/night2.png' %}" style="width:100px;">
+                </div>
+                <div class="mb-1">
+                    <label for="user_name" style="font-weight: bold; font-size: 18px; ">당신의 이름을 알려주세요 ! </label>
                 </div>
                 <div>
-                    <hr>
-                    <a>이미 가입하셨습니까?</a> <a href="/home" style="color: red; font-size: 14px;">로그인으로 이동</a>
+                    <input type="text" id="user_name" 
+                        style="width:90%; height: 36.5px; padding : 9.75px 13px;">
+                </div>
+                <div>                               
+                    <div>
+                        <button type="button" id="login_button">회원가입 완료</button>
+                    </div>
+                    <div>
+                        <hr>
+                        <a>이미 가입하셨습니까?</a> <a href="/home" style="color: red; font-size: 14px;">로그인으로 이동</a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    </div>
+        </div>
+    </form>
 
 </body>
 
