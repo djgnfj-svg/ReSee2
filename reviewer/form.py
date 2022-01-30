@@ -41,14 +41,14 @@ class StudyCreateForm(forms.ModelForm):
         widgets ={
             "study_topic":forms.Textarea(attrs={
                 "class" : "form-control",
-                 "placeholder" : "학습 주제를 입력하세요! ex.. 접두사",
-                 "style" : "height : 30px"
-                 }),
-            "study_contect":forms.Textarea(attrs={
-                "class": "new-class-name two",
-                 "placeholder" : "학습 내용을 입력하세요",
-                 "style" : "height : 500px; width : 90.75rem; outline:none; border:none; overflow: auto;"
-                 }),
+                "placeholder" : "학습 주제를 입력하세요! ex.. 접두사",
+                "style" : "height : 30px"
+                }),
+        "study_contect":forms.Textarea(attrs={
+            "class": "new-class-name two",
+                "placeholder" : "학습 내용을 입력하세요",
+                "style" : "height : 500px; width : 90.75rem; outline:none; border:none; overflow: auto;"
+                }),
         }
     def save(self, request, category_id, commit=True):
         instance = super(StudyCreateForm, self).save(commit=False)

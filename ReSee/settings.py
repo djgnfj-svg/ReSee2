@@ -51,10 +51,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    "django_user_agents",
     "reviewer",
     "accounts",
+    "rest_framework",
+    "django_user_agents",
 ]
+
+REST_FRAMEWORK = {
+    "DEFAULT_PAGINATIONS_CLASS":"rest_framework.pagination.LimitOffsetPagination",
+    "PAGE_SIZE" : 20,
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

@@ -18,6 +18,7 @@ from django.urls import include, path
 
 from accounts.views import login_view, logout_view, member_del_view, member_update_view, register_view
 from reviewer.views import home_view
+from reviewer.category_list.urls import router as category_router
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -28,4 +29,5 @@ urlpatterns = [
     path("member_update/", member_update_view, name="member_modify"),
     path("member_del/", member_del_view, name="member_del"),
     path("category_list/", include("reviewer.category_list.urls")),
+    path("api/", include(category_router.urls)),
 ]

@@ -2,6 +2,13 @@ from django.urls import path
 
 from reviewer.category_list.views import category_change_view, category_create_view, category_view, study_change_view, study_create_view, study_list_view, study_review_view
 
+from rest_framework import routers
+from reviewer.category_list.apis import *
+
+router = routers.DefaultRouter()
+router.register(r'category_list', UserViewSet)
+
+
 # category_list/~
 urlpatterns = [
     path("",category_view,name="cate_list"),

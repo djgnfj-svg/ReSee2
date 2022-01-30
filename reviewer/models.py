@@ -33,7 +33,6 @@ class Organization(TimeStampedModel):
 
 class Categories(TimeStampedModel):
 	name = models.CharField(max_length=100)
-	organization = models.ForeignKey(Organization, on_delete=models.DO_NOTHING, null=True)
 	creator = models.ForeignKey(MyUser, on_delete=models.CASCADE)
 
 class EmailVerification(TimeStampedModel):
