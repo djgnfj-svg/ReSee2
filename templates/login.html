@@ -11,28 +11,23 @@
             <div id="main_icon">
                 <img src="{% static 'img/night2.png' %}" style="width:40%;">
             </div>
-            <!-- 로그인폼  -->
-            <form id="login" action="" class="input-group-adon" method="post">
-                <div class="mb-1">
-                    <label for="staticEmail" style="font-weight: bold; font-size: 18px; ">이메일</label>
-                </div>
+            <div class="mb-1">
+                <label for="staticEmail" style="font-weight: bold; font-size: 18px; ">이메일</label>
+            </div>
+            <div>
+                <input type="text" id="staticEmail" name="user_email"
+                    style="width:90%; height: 36.5px; padding : 9.75px 13px; margin-bottom: 2%;">
+            </div>
+            <div class="mb-1">
+                <label for="inputPassword" style="font-weight: bold; font-size: 18px;">패스워드</label>
+            </div>
+            <div>
+                <input type="password" id="inputPassword" name="user_password" style="width:90%; height: 36.5px; padding : 9.75px 13px;">
+            </div>
+            <div>
                 <div>
-                    <input type="text" id="staticEmail"
-                        style="width:90%; height: 36.5px; padding : 9.75px 13px; margin-bottom: 2%;">
+                    <button type="button" id="login_button">로그인</button>
                 </div>
-                <div class="mb-1">
-                    <label for="inputPassword" style="font-weight: bold; font-size: 18px;">패스워드</label>
-                </div>
-                <div>
-                    <input type="password" id="inputPassword" style="width:90%; height: 36.5px; padding : 9.75px 13px;">
-                </div>
-                <div>
-                    <button type="submit" id="login_button" action="login">로그인</button>
-                </div>
-            </form>
-            <!-- End login_form  -->
-
-             <div>
                 <div style="margin-bottom: 3%;  ">
                     <a href="#" style="margin-bottom: 3%; color:black; font-size: 15px; text-align: left;"> 빡대가리십니까 ?
                     </a>
@@ -47,6 +42,7 @@
         </div>
     </div>
     </div>
+    </form>
 
 </body>
 
