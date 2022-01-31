@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}로그인 / 회원가입 폼 템플릿{% endblock %}
+{% block head %}
+
+{% endblock %}
+{% block content %}
+<script>
+  import {MatIconModule} from '@angular/material/icon';
+  // html dom 이 다 로딩된 후 실행된다.
+  $(document).ready(function(){
+      // menu 클래스 바로 하위에 있는 a 태그를 클릭했을때
+      $(".menu>a").click(function(){
+          var submenu = $(this).next("ul");
+
+          // submenu 가 화면상에 보일때는 위로 보드랍게 접고 아니면 아래로 보드랍게 펼치기
+          if( submenu.is(":visible") ){
+              submenu.slideUp();
+          }else{
+              submenu.slideDown();
+          }
+      });
+  });
+</script>
+<style>
+ .menu a{cursor:pointer;}
+ .menu .hide{display:none;}
+ ul{
+   list-style: none;
+   padding-left: 0%;
+   float: left;
+ }
+ li{
+   list-style: none;
+   float: left;
+ }
+ 
+
+</style>
+
+<header style="font-weight: bold; font-size: 30px; margin-top: 1%; margin-left: 3%; margin-bottom: 1%;">
+  Study_list
+</header>
+<div>
+  <a></a>
+</div>
+<div>
+  <table class="table align-items-center table-flush">
+    <thead class="thead-light">
+      <tr>
+        <th scope="col">No</th>
+        <th scope="col">Title</th>
+        <th scope="col">Last_ReSee</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">1</th>
+        <td>
+          <li class="menu">
+            <a>Python/Java<br></a>
+            <ul class="hide">
+              <div style="border: 1px solid black;">
+                  <li>Study_List</li>
+              </div>
+
+            </ul>
+        </li>
+        </td>
+        <td>2022-01-31 23:22:00</td>
+        <td>
+            <a>
+              <button style="background-color:black; width: 100px; height: 35px; color: white; border: 1px solid; border-radius: 0.5rem 0.5rem 0.5rem 0.5rem;">
+                내용보기
+              </button>
+            </a>
+        </td>
+      </tr>
+
+      <tr>
+        <th scope="row">2</th>
+        <td> Leag of legend </td>
+        </td>
+        <td>2022-02-12 23:22:00</td>
+        <td>
+            <a>
+              <button style="background-color:black; width: 100px; height: 35px; color: white; border: 1px solid; border-radius: 0.5rem 0.5rem 0.5rem 0.5rem;">
+                복습 시작
+              </button>
+              <span class="material-icons-outlined">
+                edit
+                </span>
+              <img src="" alt="">
+            </a>
+        </td>
+      </tr>
+
+    </tbody>
+  </table>
+
+</div>
+{% endblock %}

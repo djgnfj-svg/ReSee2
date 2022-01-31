@@ -2,43 +2,67 @@
 {% load static %}
 {% block title %}로그인 / 회원가입 폼 템플릿{% endblock %}
 {% block head %}
-
+<meta name="_csrf" th:content="${_csrf.token}">
+<meta name="_csrf_header" th:content="${_csrf.headerName}">
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
 {% endblock %}
 {% block content %}
 
-<script>
-  // html dom 이 다 로딩된 후 실행된다.
-  $(document).ready(function(){
-      // menu 클래스 바로 하위에 있는 a 태그를 클릭했을때
-      $(".menu>a").click(function(){
-          var submenu = $(this).next("ul");
 
-          // submenu 가 화면상에 보일때는 위로 보드랍게 접고 아니면 아래로 보드랍게 펼치기
-          if( submenu.is(":visible") ){
-              submenu.slideUp();
-          }else{
-              submenu.slideDown();
-          }
-      });
+
+<script>
+  
+
+
+  // html dom 이 다 로딩된 후 실행된다.
+  $(document).ready(function () {
+    // menu 클래스 바로 하위에 있는 a 태그를 클릭했을때
+    $(".menu>a").click(function () {
+      var submenu = $(this).next("ul");
+
+      // submenu 가 화면상에 보일때는 위로 보드랍게 접고 아니면 아래로 보드랍게 펼치기
+      if (submenu.is(":visible")) {
+        submenu.slideUp();
+      } else {
+        submenu.slideDown();
+      }
+    });
   });
 </script>
 <style>
- .menu a{cursor:pointer;}
- .menu .hide{display:none;}
- ul{
-   list-style: none;
-   padding-left: 0%;
-   float: left;
- }
- li{
-   list-style: none;
-   float: left;
- }
+  .menu a {
+    cursor: pointer;
+  }
+
+  .menu .hide {
+    display: none;
+  }
+
+  ul {
+    list-style: none;
+    padding-left: 0%;
+    float: left;
+  }
+
+  li {
+    list-style: none;
+    float: left;
+  }
 </style>
 
-<header style="font-weight: bold; font-size: 30px; margin-top: 1%; margin-left: 3%; margin-bottom: 1%;">
-  Category_List
+<header>
+  <div style="font-weight: bold; font-size: 30px; margin-top: 1%; margin-left: 3%; margin-bottom: 1%;">
+    Category_List
+  </div>
+  <div style="text-align: right; margin-right: 2rem;">
+    <button onclick="kimbob()" type="submit" class="Add_Cate"
+      style="background-color: white; color:black; width: 100px; height: 30px; border-radius: 1rem 1rem 1rem 1rem;">
+      Add
+    </button>
+  </div>
+</div>
 </header>
+
 <div>
   <a></a>
 </div>
@@ -60,24 +84,25 @@
         <th scope="row">1</th>
         <td>
           <li class="menu">
-            <a>Python/Java<br></a>
+            <input type="text" id="pyjava">
             <ul class="hide">
               <div style="border: 1px solid black;">
-                  <li>Study_List</li>
+                <li>Study_List</li>
               </div>
-
+              
             </ul>
-        </li>
+          </li>
         </td>
         <td>ReSee : 3Combo !
         </td>
         <td>2022-01-31 23:22:00</td>
         <td>
-            <a>
-              <button style="background-color:black; width: 100px; height: 35px; color: white; border: 1px solid; border-radius: 0.5rem 0.5rem 0.5rem 0.5rem;">
-                복습 시작
-              </button>
-            </a>
+          <a>
+            <button
+              style="background-color:black; width: 100px; height: 35px; color: white; border: 1px solid; border-radius: 0.5rem 0.5rem 0.5rem 0.5rem;">
+              복습 시작
+            </button>
+          </a>
         </td>
       </tr>
 
@@ -88,16 +113,49 @@
         </td>
         <td>2022-02-12 23:22:00</td>
         <td>
-            <a>
-              <button style="background-color:black; width: 100px; height: 35px; color: white; border: 1px solid; border-radius: 0.5rem 0.5rem 0.5rem 0.5rem;">
-                복습 시작
-              </button>
-            </a>
+          <a>
+            
+            <button type="submit"
+              style="background-color:black; width: 100px; height: 35px; color: white; border: 1px solid; border-radius: 0.5rem 0.5rem 0.5rem 0.5rem;">
+              복습 시작
+            </button>
+            <img src="" alt="">
+          </a>
         </td>
       </tr>
-
     </tbody>
   </table>
-
 </div>
+
+
+<script type="text/javascript">
+  let click = true;
+
+  function kimbob() {
+    $.ajax({
+      type: "POST",
+      url: "{% url 'cate_list' %}",
+      headers : {
+        'X-CSRFTOKEN' : '{{ csrf_token }}'
+      },
+      data :{
+        click
+      }, 
+      dataType: "json",
+      success : function(json) {
+        alert("성공");
+        if (json) {
+          if (json.result == true) {//응모성공
+            alert(" 생성 성공 !");
+          }
+        }
+        return;
+      },
+      error: function (request, status, error) {
+        alert("code:" + request.status + "\n" + "error:" + error);
+      }
+    });
+  }
+</script>
+
 {% endblock %}
