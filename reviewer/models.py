@@ -1,5 +1,6 @@
 import random, string
 from typing import Dict
+from unicodedata import category
 
 from django.db import models
 from django.contrib.gis.geoip2 import GeoIP2
@@ -30,15 +31,26 @@ class Organization(TimeStampedModel):
 	industry = models.CharField(max_length=15, choices=Industries.choices,default=Industries.OTHERS)
 	pay_plan = models.ForeignKey(PayPlan, on_delete=models.DO_NOTHING, null=True)
 
-
-class Categories(TimeStampedModel):
-	name = models.CharField(max_length=100)
-	creator = models.ForeignKey(MyUser, on_delete=models.CASCADE)
-
 class EmailVerification(TimeStampedModel):
 	user = models.ForeignKey(MyUser, on_delete=models.CASCADE)
 	key = models.CharField(max_length=100, null=True)
 	verified = models.BooleanField(default=False)
+
+class Categories(TimeStampedModel):
+	name = models.CharField(max_length=100)
+	creator = models.ForeignKey(MyUser, on_delete=models.CASCADE)
+	category_count = models.IntegerField(default=0)
+
+	def create_cate(self, request):
+		self.category_count += 1
+		self.creator_id = request.user.id
+		self.name = "temp category" + self.category_count
+		self.save()
+
+	def cate_count_up(self):
+		self.category_count += 1
+		self.save()
+
 
 class StudyList(TimeStampedModel):
 	def rand_string():
