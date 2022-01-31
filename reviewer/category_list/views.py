@@ -1,3 +1,5 @@
+import json
+from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from reviewer.form import CateCreateForm, StudyCreateForm, StudyReviewForm
 from reviewer.models import Categories, Statistic, StudyList
@@ -7,9 +9,14 @@ from django.contrib.auth.decorators import login_required
 from reviewer.utils import dateCalculation
 
 def category_view(request):
+    print(request)
+    if request.method == "POST":
+        print(request.POST)
+        return JsonResponse(request.POST)
     msg = "asdf"
     get_list = Categories.objects.order_by("created_at").filter(creator_id=request.user.id)
     return render(request, "cate_list.html", {"list" : get_list, "msg":msg})
+
 
 @login_required
 def category_create_view(request):
