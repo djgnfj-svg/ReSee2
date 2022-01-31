@@ -7,50 +7,62 @@
 {% block content %}
 
 <body>
-    <div id="main_content">
-        <div class="mb-3 row" id="user_info">
-            <div id="main_icon" style="width:40%;">
-                <img src="{% static 'img/night2.png' %}" style="width:100px;">
-            </div>
-            <div class="mb-1">
-                <label for="user_name" style="font-weight: bold; font-size: 18px;">이메일</label>
-            </div>
-            <div>
-                <input type="text" id="user_name" name="register_email"
-                    style="width:90%; height: 36.5px; padding : 9.75px 13px;  margin-bottom: 5px;">
-
-            </div>
-            <div class="mb-1">
-                <label for="inputPassword" style="font-weight: bold; font-size: 18px; ">패스워드</label>
-            </div>
-            <div>
-                <input type="password" id="inputPassword" name="register_password"
-                    style="width:90%; height: 36.5px; padding : 9.75px 13px;">
-                <br>
-                <p style="text-align: left; margin-left: 22px; font-size: 14.5px;"> 패스워드는 최소 8자 이상이어야 합니다. 흔한 단어또는 패턴
-                    사용은 피하세요. </p>
-            </div>
-            <div>
+    <form id="register" action="" class="input-group-adon" method="post">
+        <div id="main_content">
+            <div class="mb-3 row" id="user_info">
+                <div id="main_icon" style="width:40%;">
+                    <img src="{% static 'img/night2.png' %}" style="width:100px;">
+                </div>
+                <!-- 이름 -->
                 <div class="mb-1">
-                    <label for="inputPassword" style="font-weight: bold; font-size: 18px; ">패스워드 확인</label>
+                    <label for="user_name" style="font-weight: bold; font-size: 18px; ">당신의 이름을 알려주세요 ! </label>
                 </div>
                 <div>
-                    <input type="password" id="inputPassword" name="confirm_password" style="width:90%; height: 36.5px; padding : 9.75px 13px;">
+                    <input type="text" id="user_name" name="user_name"
+                        style="width:90%; height: 36.5px; padding : 9.75px 13px;">
+                </div>
+                <!-- 이메일 -->
+                <div class="mb-1">
+                    <label for="user_name" style="font-weight: bold; font-size: 18px;">이메일</label>
                 </div>
                 <div>
-                    <div>
-                        <a href="/registerName">
-                            <button type="button" id="login_button">이메일로 가입</button>
-                        </a>
+                    <input type="text" id="user_name" name="register_email"
+                        style="width:90%; height: 36.5px; padding : 9.75px 13px;  margin-bottom: 5px;">
+                </div>
+                <!-- 패스워드 -->
+                <div class="mb-1">
+                    <label for="inputPassword" style="font-weight: bold; font-size: 18px; ">패스워드</label>
+                </div>
+                <div>
+                    <input type="password" id="inputPassword" name="register_password"
+                        style="width:90%; height: 36.5px; padding : 9.75px 13px;">
+                    <br>
+                    <p style="text-align: left;  font-size: 14.5px;"> 패스워드는 최소 8자 이상이어야 합니다. 흔한 단어또는
+                        패턴<br>
+                        사용은 피하세요. </p>
+                </div>
+                <!-- 패스워드 확인 -->
+                <div>
+                    <div class="mb-1">
+                        <label for="inputPassword" style="font-weight: bold; font-size: 18px; ">패스워드 확인</label>
                     </div>
                     <div>
-                        <hr>
-                        <a>이미 가입하셨습니까?</a> <a href="/login" style="color: red; font-size: 14px;">로그인으로 이동</a>
+                        <input type="password" id="inputPassword" name="confirm_password"
+                            style="width:90%; height: 36.5px; padding : 9.75px 13px;">
+                    </div>
+                    <div>
+                        <div>
+                            <button type="button" id="login_button" onclick="location.href='/home'">회원가입 완료</button>
+                        </div>
+                        <div>
+                            <hr>
+                            <a>이미 가입하셨습니까?</a> <a href="/login" style="color: red; font-size: 14px;">로그인으로 이동</a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </form>
 </body>
 
 </html>

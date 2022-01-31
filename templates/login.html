@@ -6,42 +6,45 @@
 {% block content %}
 
 <body>
-    <div id="main_content">
-        <div class="mb-3 row" id="user_info">
-            <div id="main_icon">
-                <img src="{% static 'img/night2.png' %}" style="width:40%;">
-            </div>
-            <div class="mb-1">
-                <label for="staticEmail" style="font-weight: bold; font-size: 18px; ">이메일</label>
-            </div>
-            <div>
-                <input type="text" id="staticEmail" name="user_email"
-                    style="width:90%; height: 36.5px; padding : 9.75px 13px; margin-bottom: 2%;">
-            </div>
-            <div class="mb-1">
-                <label for="inputPassword" style="font-weight: bold; font-size: 18px;">패스워드</label>
-            </div>
-            <div>
-                <input type="password" id="inputPassword" name="user_password" style="width:90%; height: 36.5px; padding : 9.75px 13px;">
-            </div>
-            <div>
-                <div>
-                    <button type="button" id="login_button">로그인</button>
+    <form id="login" action="" class="input-group-adon" method="post">
+        <div id="main_content">
+            <div class="mb-3 row" id="user_info">
+                <div id="main_icon">
+                    <img src="{% static 'img/night2.png' %}" style="width:40%;">
                 </div>
-                <div style="margin-bottom: 3%;  ">
-                    <a href="#" style="margin-bottom: 3%; color:black; font-size: 15px; text-align: left;"> 빡대가리십니까 ?
-                    </a>
+                <div class="mb-1">
+                    <label for="staticEmail" style="font-weight: bold; font-size: 18px; ">이메일</label>
                 </div>
                 <div>
-                    <hr>
-                    <div style="text-align: center;">
-                        <a>계정이 없으십니까?</a> <a href="/register" style="color: red; font-size: 15px;">가입</a>
+                    <input type="text" id="staticEmail" name="user_email"
+                        style="width:90%; height: 36.5px; padding : 9.75px 13px; margin-bottom: 2%;">
+                </div>
+                <div class="mb-1">
+                    <label for="inputPassword" style="font-weight: bold; font-size: 18px;">패스워드</label>
+                </div>
+                <div>
+                    <input type="password" id="inputPassword" name="user_password"
+                        style="width:90%; height: 36.5px; padding : 9.75px 13px;">
+                </div>
+                <div>
+                    <div>
+                        <button type="sumit" id="login_button" onclick="location.href='/login'">로그인</button>
+                    </div>
+                    <div style="margin-bottom: 3%;  ">
+                        <a href="#" style="margin-bottom: 3%; color:black; font-size: 15px; text-align: left;"> 빡대가리십니까
+                            ?
+                        </a>
+                    </div>
+                    <div>
+                        <hr>
+                        <div style="text-align: center;">
+                            <a>계정이 없으십니까?</a> <a href="/register" style="color: red; font-size: 15px;">가입</a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    </div>
+        </div>
     </form>
 
 </body>
