@@ -1,4 +1,6 @@
+from email.policy import default
 from pyexpat import model
+import re
 from attr import field
 from django.contrib.auth.models import User
 
@@ -18,11 +20,31 @@ class UserSerializer(serializers.ModelSerializer):
 
 	class Meta:
 		model = MyUser
-		fields = ["id", "email",]
+		fields = ["id", "email", "user"]
 
-class CategoryListSerializer(serializers.ModelSerializer):
+class CateListSerializer(serializers.ModelSerializer):
 	creator = UserSerializer(read_only=True)
 
 	class Meta:
 		model = Categories
-		fields = ["id", "name",]
+		fields = ["id", "name", "creator", "category_count", "created_at"]
+
+class CateCreateSerializer(serializers.Serializer):
+	name = serializers.CharField(max_length=50)
+	category_count = serializers.IntegerField(required=False, default=0)
+
+	def create(self, request, data, commit=True):
+		print("testaa", data)
+		instance = Categories()
+		instance.name = data.get("name")
+		instance.creator_id = request.user.id
+		instance.category_count = data.get("category_count") + 1
+		if commit:
+				try:
+						instance.save()
+				except Exception as e:
+						print(e)
+				else:
+						pass
+		print(instance)
+		return instance

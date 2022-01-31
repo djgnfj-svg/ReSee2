@@ -57,10 +57,10 @@ INSTALLED_APPS = [
     "django_user_agents",
 ]
 
-REST_FRAMEWORK = {
-    "DEFAULT_PAGINATIONS_CLASS":"rest_framework.pagination.LimitOffsetPagination",
-    "PAGE_SIZE" : 20,
-}
+# REST_FRAMEWORK = {
+#     "DEFAULT_PAGINATIONS_CLASS":"rest_framework.pagination.LimitOffsetPagination",
+#     "PAGE_SIZE" : 20,
+# }
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

@@ -5,11 +5,17 @@ from accounts.models import MyUser
 
 class LoginForm(forms.Form):
 	email = forms.EmailField(
-			max_length=100, required=True, widget=forms.EmailInput(attrs={"class" : "input-field", "placeholder": "이메일"})
+			max_length=100, required=True, widget=forms.EmailInput(attrs={
+             "class" : "input-field",
+             "style" : "width:90%; height: 36.5px; padding : 9.75px 13px; margin-bottom: 2%;",
+             })
 	)
 	password = forms.CharField(
 		max_length=30, required=True,
-		widget=forms.PasswordInput(attrs={"class" : "input-field", "placeholder": "패스워드"})
+		widget=forms.PasswordInput(attrs={
+            "class" : "input-field",
+            "style" : "width:90%; height: 36.5px; padding : 9.75px 13px;",
+             })
 	)
 
 class RegisterForm(UserCreationForm):

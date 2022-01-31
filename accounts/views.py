@@ -1,3 +1,4 @@
+import json
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.views.decorators.csrf import csrf_exempt
@@ -12,6 +13,7 @@ from accounts.models import MyUser
 @csrf_exempt
 def login_view(request):
     if request.method == "POST":
+        print(request.POST)
         user_email = request.POST.get("user_email")
         user_password = request.POST.get("user_password")
         res_data = {}
@@ -28,8 +30,12 @@ def login_view(request):
     return render(request, "login.html")
 
 def logout_view(request):
+    if request.session.get('user'):
+        del(request.session['user'])
+
     logout(request)
     return redirect("home")
+
 @csrf_exempt
 def register_view(request):
     if request.method == 'GET':
