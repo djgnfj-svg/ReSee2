@@ -1,2 +1,10 @@
 ToDo_list
-1. account 로그인 실패 사유들 작성하고 restapi로 보네기
+back
+1. account 로그인 실패 사유들 함수로 처리하기
+2. study rest_fream_work
+
+front
+1. home 버튼액션
+2. account 수정 및 삭제 페이지 제작 (페이지가 아니여도 무방)
+3. top_bar 세션 여부에따라서 장고 템플릿으로 제작
+4. study

@@ -20,7 +20,28 @@ from accounts.views import login_view, logout_view, member_del_view, member_upda
 from reviewer.views import home_view
 from reviewer.category_list.urls import router as category_router
 
+from django.conf.urls import url
+from rest_framework import permissions
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+
+schema_view = get_schema_view(
+    openapi.Info(
+        title="ReSee API",
+        default_version="v1",
+        description="Test description",
+        terms_of_service="https://www.google.com/policies/terms/",
+        contact=openapi.Contact(email="contact@snippets.local"),
+        license=openapi.License(name="BSD License"),
+    ),
+    public=True,
+    permission_classes=(permissions.AllowAny,),
+)
+
 urlpatterns = [
+    url(r"^swagger(?P<format>\.json|\.yaml)$", schema_view.without_ui(cache_timeout=0), name="schema-json"),
+    url(r"^swagger/$", schema_view.with_ui("swagger", cache_timeout=0), name="schema-swagger-ui"),
+    url(r"^redoc/$", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"),
     path("admin/", admin.site.urls),
     path("", home_view, name="home"),
     path("login/", login_view, name="login"),
@@ -30,4 +51,5 @@ urlpatterns = [
     path("member_del/", member_del_view, name="member_del"),
     path("category_list/", include("reviewer.category_list.urls")),
     path("api/", include(category_router.urls)),
+
 ]

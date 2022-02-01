@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     "reviewer",
     "accounts",
     "rest_framework",
+    'drf_yasg',
     "django_user_agents",
 ]
 

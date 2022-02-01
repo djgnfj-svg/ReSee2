@@ -1,7 +1,3 @@
-from email.policy import default
-from pyexpat import model
-import re
-from attr import field
 from django.contrib.auth.models import User
 
 from accounts.models import MyUser
@@ -34,7 +30,6 @@ class CateCreateSerializer(serializers.Serializer):
 	category_count = serializers.IntegerField(required=False, default=0)
 
 	def create(self, request, data, commit=True):
-		print("testaa", data)
 		instance = Categories()
 		instance.name = data.get("name")
 		instance.creator_id = request.user.id
@@ -46,5 +41,4 @@ class CateCreateSerializer(serializers.Serializer):
 						print(e)
 				else:
 						pass
-		print(instance)
 		return instance

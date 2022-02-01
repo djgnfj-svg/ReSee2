@@ -9,15 +9,12 @@ from django.contrib.auth.decorators import login_required
 from reviewer.utils import dateCalculation
 
 def category_view(request):
-    if request.POST.get("create_cate"):
-        # 나중에 payplan에 따라 달라짐
-        temp=Categories.objects.filter(creator=request.user.id)
-        if temp["category_count"] < 3:
-            temp.create_cate(request)
-            return redirect("cate_list")
-        return redirect("cate_list")
-    return render(request, "cate_list.html")
-
+    print(request)
+    if request.method == "POST":
+        print(request.POST)
+        return JsonResponse(request.POST)
+    get_list = Categories.objects.order_by("created_at").filter(creator_id=request.user.id)
+    return render(request, "cate_list.html", {"list" : get_list})
 
 @login_required
 def category_create_view(request):
@@ -44,14 +41,10 @@ def category_change_view(request, action, category_id):
                 msg = "자신이 소유하지 않은 list 입니다리~~"
             else:
                 if action == "delete":
-                    msg = f"{list_data.first().name} 삭제 완료"
                     list_data.delete()
-                    messages.add_message(request, messages.INFO, msg)
                 elif action == "update":
-                    msg = f"{list_data.first().name} 수정 완료"
                     form = CateCreateForm(request.POST)
                     form.update_form(request, category_id)
-                    messages.add_message(request, messages.INFO, msg)
     elif request.method == "GET" and action == "update":
         list_data = Categories.objects.filter(pk=category_id).first()
         form = CateCreateForm(instance=list_data)
@@ -70,8 +63,6 @@ def study_create_view(request, category_id):
     if request.method == "POST":
         form = StudyCreateForm(request.POST)
         if form.is_valid():
-            msg = f"{form.cleaned_data.get('name')} 생성완료!"
-            messages.add_message(request, messages.INFO, msg)
             temp = Categories.objects.filter(id=category_id).first()
             form.save(request, temp.id)
             return redirect("study_list", category_id)
