@@ -8,13 +8,14 @@ from django.contrib.auth.decorators import login_required
 
 from reviewer.utils import dateCalculation
 
+@login_required
 def category_view(request):
     print(request)
     if request.method == "POST":
         print(request.POST)
         return JsonResponse(request.POST)
     get_list = Categories.objects.order_by("created_at").filter(creator_id=request.user.id)
-    return render(request, "cate_list.html", {"list" : get_list})
+    return render(request, "cate_list.html")
 
 @login_required
 def category_create_view(request):

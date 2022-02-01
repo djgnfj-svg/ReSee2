@@ -12,7 +12,8 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework.decorators import action, renderer_classes
 
 class UserViewSet(viewsets.ModelViewSet):
-	queryset = Categories.objects.order_by("-created_at")
+	print(Categories.objects)
+	queryset = Categories.objects.filter().order_by("-created_at")
 	serializer_class = CateListSerializer
 	permission_classes = [permissions.IsAuthenticated]
 
@@ -20,11 +21,16 @@ class UserViewSet(viewsets.ModelViewSet):
 	def create(self, request):
 		# POST METHOD
 		serializer = CateCreateSerializer(data=request.data)
-		print(serializer.is_valid())
+		print(serializer)
+		# print(serializer.is_valid())
 		if serializer.is_valid():
 			rtn = serializer.create(request, serializer.data)
 			return Response(CateListSerializer(rtn).data, status=status.HTTP_201_CREATED)
-		pass
+		Resee_data = {
+			"status" :500,
+			"msg" : "카테고리 네임을 입력하셔야 합니다."
+		}
+		return Response(Resee_data)
 	
 	def retrieve(self, request, pk=None):
 		#Detail Get
@@ -51,7 +57,8 @@ class UserViewSet(viewsets.ModelViewSet):
 
 	def list(self, request):
 		# GET ALL
-		queryset = self.get_queryset().all()
+		print("test")
+		queryset = self.get_queryset().all().filter(creator_id=request.user.id)
 		serializer = CateListSerializer(queryset, many=True)
 		return Response(serializer.data)
 	

@@ -1,3 +1,6 @@
+from tkinter.tix import Tree
+from unicodedata import category
+from xml.etree.ElementInclude import default_loader
 from django.contrib.auth.models import User
 
 from accounts.models import MyUser
@@ -31,7 +34,7 @@ class CateCreateSerializer(serializers.Serializer):
 
 	def create(self, request, data, commit=True):
 		instance = Categories()
-		instance.name = data.get("name")
+		instance.name = data.get("name", None)
 		instance.creator_id = request.user.id
 		instance.category_count = data.get("category_count") + 1
 		if commit:
