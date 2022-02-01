@@ -2,7 +2,6 @@
 {% load static %}
 {% block title %}로그인 / 회원가입 폼 템플릿{% endblock %}
 {% block head %}
-
 {% endblock %}
 {% block content %}
 {% csrf_token %}
@@ -10,8 +9,8 @@
     <form id="register" action="" class="input-group-adon" method="post">
         <div id="main_content">
             <div class="mb-3 row" id="user_info">
-                <div id="main_icon" style="width:40%;">
-                    <img src="{% static 'img/night2.png' %}" style="width:100px;">
+                <div id="main_icon">
+                    <img src="{% static 'img/ReSee_image.png' %}" style="width:100px;">
                 </div>
                 <!-- 이름 -->
                 <div class="mb-1">
@@ -19,7 +18,7 @@
                 </div>
                 <div>
                     <input type="text" id="user_name" name="user_name"
-                        style="width:90%; height: 36.5px; padding : 9.75px 13px;">
+                        style="width:90%; height: 38px; padding : 9.75px 13px;">
                 </div>
                 <!-- 이메일 -->
                 <div class="mb-1">

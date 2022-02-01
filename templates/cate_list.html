@@ -11,9 +11,6 @@
 
 
 <script>
-  
-
-
   // html dom 이 다 로딩된 후 실행된다.
   $(document).ready(function () {
     // menu 클래스 바로 하위에 있는 a 태그를 클릭했을때
@@ -28,6 +25,8 @@
       }
     });
   });
+
+  
 </script>
 <style>
   .menu a {
@@ -55,7 +54,7 @@
     Category_List
   </div>
   <div style="text-align: right; margin-right: 2rem;">
-    <button onclick="kimbob()" type="submit" class="Add_Cate"
+    <button type="submit" class="Add_Cate" id="Add"
       style="background-color: white; color:black; width: 100px; height: 30px; border-radius: 1rem 1rem 1rem 1rem;">
       Add
     </button>
@@ -98,7 +97,7 @@
         <td>2022-01-31 23:22:00</td>
         <td>
           <a>
-            <button
+            <button onclick="bob()"
               style="background-color:black; width: 100px; height: 35px; color: white; border: 1px solid; border-radius: 0.5rem 0.5rem 0.5rem 0.5rem;">
               복습 시작
             </button>
@@ -114,7 +113,6 @@
         <td>2022-02-12 23:22:00</td>
         <td>
           <a>
-            
             <button type="submit"
               style="background-color:black; width: 100px; height: 35px; color: white; border: 1px solid; border-radius: 0.5rem 0.5rem 0.5rem 0.5rem;">
               복습 시작
@@ -127,35 +125,55 @@
   </table>
 </div>
 
-
 <script type="text/javascript">
-  let click = true;
 
-  function kimbob() {
-    $.ajax({
-      type: "POST",
-      url: "{% url 'cate_list' %}",
-      headers : {
-        'X-CSRFTOKEN' : '{{ csrf_token }}'
-      },
-      data :{
-        click
-      }, 
-      dataType: "json",
-      success : function(json) {
-        alert("성공");
-        if (json) {
-          if (json.result == true) {//응모성공
-            alert(" 생성 성공 !");
+  $(document).ready(function(){
+    // add버튼 클릭시 
+    $(".Add_Cate").click(function(){
+      var input = prompt();
+      var name = input.trim();
+      if(name == ""){
+          alert("값을 입력해주세요");
+      }else{
+        $.ajax({
+          type: "POST",
+          url: "{% url 'cate_list' %}",
+          headers : {
+            'X-CSRFTOKEN' : '{{ csrf_token }}'
+          },
+          data :{
+            name
+          }, 
+          dataType: "json",
+          success : function(json) {
+            alert("성공");
+            if (json) {
+              if (json.result == true) {//응모성공
+                alert(" 생성 성공 !");
+              }
+            }
+            return;
+          },
+          error: function (request, status, error) {
+            alert("code:" + request.status + "\n" + "error:" + error);
           }
-        }
-        return;
-      },
-      error: function (request, status, error) {
-        alert("code:" + request.status + "\n" + "error:" + error);
+        });
       }
-    });
-  }
+      })
+    })
+    function bob(){
+      $.ajax({
+        type : "GET",
+        url : "/api/category_list",
+        dataType : 'json',
+        success : function(data){
+          alert(JSON.stringify(data));
+        },
+        error: function(err){
+          console.log(err); //오류발생시 콘솔 로그 출력
+        },
+      });
+    }
 </script>
 
 {% endblock %}

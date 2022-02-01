@@ -8,7 +8,7 @@
         div#main_content {
             width: 100%;
             text-align: center;
-            transform: translateY(10%);
+            margin-top: 5%;
         }
 
         a:link {
