@@ -10,9 +10,10 @@ from reviewer.utils import dateCalculation
 
 @login_required
 def category_view(request):
-    print(request)
     if request.method == "POST":
-        print(request.POST)
+        cate_list = CateCreateForm(request.POST)
+        if cate_list.is_valid():
+            cate_list.save(request)
         return JsonResponse(request.POST)
     get_list = Categories.objects.order_by("created_at").filter(creator_id=request.user.id)
     return render(request, "cate_list.html")

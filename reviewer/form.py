@@ -7,28 +7,18 @@ class CateCreateForm(forms.ModelForm):
     class Meta:
         model = Categories
         fields = ["name"]
-        labels = {
-            "name" : _("과목이름"),
-        }
-        widgets ={
-            "name":forms.TextInput(attrs={
-                "class" : "form-control",
-                "placeholder" : "케테고리 입력하세욥!",
-                }),
-        }
-        
+
     def save(self, request, commit=True):
         instance = super(CateCreateForm, self).save(commit=False)
         instance.creator_id = request.user.id
         instance.name = instance.name.strip()
         if commit:
-            print("Teststsets")
             instance.save()
         return instance
 
     def update_form(self, request, list_id):
         instance = super(CateCreateForm, self).save(commit=False)
-        instance.category_name = instance.category_name.strip()
+        instance.name = instance.name.strip()
         Categories.objects.filter(pk=list_id, creator_id=request.user.id).update(category_name=instance.category_name)
 
 class StudyCreateForm(forms.ModelForm):
