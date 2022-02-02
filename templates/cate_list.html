@@ -26,6 +26,36 @@
     });
   });
 
+  $.ajax({
+        type : "GET",
+        url : "/api/category_list",
+        dataType : 'json',
+        success : function(json){
+          for(var i = 0; i < json.length; i++){
+            $("#mode").append(" "+
+            "<tr>"+
+              "<th scope='row'>"+json[i].id+"</th>"+
+                "<td>"+
+                  "<li class='menu'>"+
+                    json[i].name+
+                "</li>"+
+              "</td>"+
+              "<td> <li>"+json[i].category_count+"</li></td>"+
+             "<td><li>"+json[i].created_at+"</li></td>"+
+           "<td>"+
+            "<a>"+
+              "<button type='submit' id='start' >"+
+                "복습 시작"+
+              "</button>"+
+            "</a>"+
+          "</td>"+
+        "</tr>)");
+              }
+          },
+        error: function(err){
+          console.log(err); //오류발생시 콘솔 로그 출력
+        },
+      });
   
 </script>
 <style>
@@ -47,6 +77,15 @@
     list-style: none;
     float: left;
   }
+  button#start{
+    background-color:black;
+    width: 100px;
+    height: 35px;
+    color: white;
+    border: 1px solid;
+    border-radius: 0.5rem 0.5rem 0.5rem 0.5rem;
+  }
+              
 </style>
 
 <header>
@@ -63,7 +102,7 @@
 </header>
 
 <div>
-  <a></a>
+  <a id></a>
 </div>
 <div>
   <table class="table align-items-center table-flush">
@@ -78,49 +117,25 @@
         <th scope="col">Action</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody id="mode">
+      <!-- 생성 시작부분 -->
       <tr>
         <th scope="row">1</th>
         <td>
           <li class="menu">
-            <input type="text" id="pyjava">
-            <ul class="hide">
-              <div style="border: 1px solid black;">
-                <li>Study_List</li>
-              </div>
-              
-            </ul>
           </li>
         </td>
-        <td>ReSee : 3Combo !
-        </td>
-        <td>2022-01-31 23:22:00</td>
+        <td> <li>횟수</li></td>
+        <td><li>날짜</li></td>
         <td>
           <a>
-            <button onclick="bob()"
-              style="background-color:black; width: 100px; height: 35px; color: white; border: 1px solid; border-radius: 0.5rem 0.5rem 0.5rem 0.5rem;">
+            <button type="submit" id="start" onclick="bob()" >
               복습 시작
             </button>
           </a>
         </td>
       </tr>
-
-      <tr>
-        <th scope="row">2</th>
-        <td> Leag of legend </td>
-        <td>ReSee : 23Combo !
-        </td>
-        <td>2022-02-12 23:22:00</td>
-        <td>
-          <a>
-            <button type="submit"
-              style="background-color:black; width: 100px; height: 35px; color: white; border: 1px solid; border-radius: 0.5rem 0.5rem 0.5rem 0.5rem;">
-              복습 시작
-            </button>
-            <img src="" alt="">
-          </a>
-        </td>
-      </tr>
+      <!-- 끝 부분 -->
     </tbody>
   </table>
 </div>
@@ -135,6 +150,7 @@
       if(name == ""){
           alert("값을 입력해주세요");
       }else{
+        //Post 보내기
         $.ajax({
           type: "POST",
           url: "{% url 'cate_list' %}",
@@ -147,33 +163,62 @@
           dataType: "json",
           success : function(json) {
             alert("성공");
-            if (json) {
-              if (json.result == true) {//응모성공
-                alert(" 생성 성공 !");
-              }
-            }
-            return;
           },
           error: function (request, status, error) {
             alert("code:" + request.status + "\n" + "error:" + error);
           }
         });
       }
-      })
-    })
-    function bob(){
+      //GET으로 받기
       $.ajax({
         type : "GET",
         url : "/api/category_list",
         dataType : 'json',
-        success : function(data){
-          alert(JSON.stringify(data));
-        },
+        success : function(json){
+          $("#mode").append(" "+
+            "<tr>"+
+              "<th scope='row'>"+json[0].id+"</th>"+
+                "<td>"+
+                  "<li class='menu'>"+
+                    json[0].name+
+                "</li>"+
+              "</td>"+
+              "<td> <li>"+json[0].category_count+"</li></td>"+
+             "<td><li>"+json[0].created_at+"</li></td>"+
+           "<td>"+
+            "<a>"+
+              "<button type='submit' id='start' >"+
+                "복습 시작"+
+              "</button>"+
+            "</a>"+
+          "</td>"+
+        "</tr>)");
+          },
         error: function(err){
           console.log(err); //오류발생시 콘솔 로그 출력
         },
       });
-    }
+
+      
+
+      })
+    })
+
+    // function bob(){
+    //   $.ajax({
+    //     type : "GET",
+    //     url : "/api/category_list",
+    //     dataType : 'json',
+    //     success : function(json){
+    //       $.each(json, function(index,item){
+
+    //       });
+    //     },
+    //     error: function(err){
+    //       console.log(err); //오류발생시 콘솔 로그 출력
+    //     },
+    //   });
+    // }
 </script>
 
 {% endblock %}
