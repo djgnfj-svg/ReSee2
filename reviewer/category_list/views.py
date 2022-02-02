@@ -15,24 +15,7 @@ def category_view(request):
         if cate_list.is_valid():
             cate_list.save(request)
         return JsonResponse(request.POST)
-    get_list = Categories.objects.order_by("created_at").filter(creator_id=request.user.id)
     return render(request, "cate_list.html")
-
-@login_required
-def category_create_view(request):
-    msg = None
-    if request.method == "POST":
-        form = CateCreateForm(request.POST)
-        if form.is_valid():
-            msg = f"{form.cleaned_data.get('name')} 생성완료!"
-            messages.add_message(request, messages.INFO, msg)
-            form.save(request)
-            return redirect("cate_list")
-        else:
-            form =CateCreateForm()
-    else:
-        form =CateCreateForm()
-    return render(request, "cate_create.html", {"form":form})
 
 @login_required
 def category_change_view(request, action, category_id):

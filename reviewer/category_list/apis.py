@@ -1,3 +1,4 @@
+import time
 from tkinter.tix import Tree
 from django.http import Http404
 from rest_framework import viewsets
@@ -13,7 +14,7 @@ from rest_framework.decorators import action, renderer_classes
 
 class UserViewSet(viewsets.ModelViewSet):
 	print(Categories.objects)
-	queryset = Categories.objects.filter().order_by("-created_at")
+	queryset = Categories.objects.filter().order_by("created_at")
 	serializer_class = CateListSerializer
 	permission_classes = [permissions.IsAuthenticated]
 
@@ -21,11 +22,10 @@ class UserViewSet(viewsets.ModelViewSet):
 	def create(self, request):
 		# POST METHOD
 		serializer = CateCreateSerializer(data=request.data)
-		print(serializer)
-		# print(serializer.is_valid())
 		if serializer.is_valid():
 			rtn = serializer.create(request, serializer.data)
 			return Response(CateListSerializer(rtn).data, status=status.HTTP_201_CREATED)
+		#is_valid 하지 않으면
 		Resee_data = {
 			"status" :500,
 			"msg" : "카테고리 네임을 입력하셔야 합니다."
@@ -57,9 +57,10 @@ class UserViewSet(viewsets.ModelViewSet):
 
 	def list(self, request):
 		# GET ALL
-		print("test")
+		time.sleep(0.05)
 		queryset = self.get_queryset().all().filter(creator_id=request.user.id)
 		serializer = CateListSerializer(queryset, many=True)
+		print("GET으로 검색", queryset.last())
 		return Response(serializer.data)
 	
 	@action(detail=True, methods=["get"])
