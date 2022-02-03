@@ -64,11 +64,13 @@ class UserViewSet(viewsets.ModelViewSet):
 		print("GET으로 검색", queryset.last())
 		return Response(serializer.data)
 	
-	@action(detail=True, methods=["get"])
-	def study_list(self, request, pk=None):
-		print(self)
-		print(request)
-		return Response(StudyViewSet)
+	# @action(detail=True, methods=["get"])
+	# def study_list(self, request, pk=None):
+	# 	print(self)
+	# 	print(request)
+	# 	# return redirect("api/category_list/{}/study_list".format(pk))
+	# 	return Response("api/category_list/{}/study_list".format(pk))
+		# return redirect("")
 
 class StudyViewSet(viewsets.ModelViewSet):
 	queryset = StudyList.objects.filter().order_by("created_at")
@@ -95,11 +97,25 @@ class StudyViewSet(viewsets.ModelViewSet):
 		queryset = self.get_queryset().filter(pk=pk).first()
 		serializer = StudyListSerializer(queryset)
 		return Response(serializer.data)
+	def update(self, request, pk=None):
+		# PUT 메소드
+		pass
 
+	def partial_update(self, request, pk=None):
+		# PATCH METHOD
+		pass
+
+	@renderer_classes([JSONRenderer])
+	def destroy(self, request, pk=None):
+		queryset = self.get_queryset().filter(pk=pk, creator_id = request.user.id)
+		if not queryset.exists():
+			raise Http404
+		queryset.delete()
+		return Response({"msg": "ok"})
+		
 	def list(self, request, category_id):
 		# GET ALL
 		time.sleep(0.05)
 		queryset = self.get_queryset().all().filter(creator_id=request.user.id)
 		serializer = StudyListSerializer(queryset, many=True)
-		print("GET으로 검색", queryset.last())
 		return Response(serializer.data)
