@@ -66,11 +66,11 @@ def study_change_view(request, category_id, action, study_id):
                 msg = "자신이 소유하지 않은 list 입니다리~~"
             else:
                 if action == "delete":
-                    msg = f"{list_data.first().study_topic} 삭제 완료"
+                    msg = f"{list_data.first().study_title} 삭제 완료"
                     list_data.delete()
                     messages.add_message(request, messages.INFO, msg)
                 elif action == "update":
-                    msg = f"{list_data.first().study_topic} 수정 완료"
+                    msg = f"{list_data.first().study_title} 수정 완료"
                     form = StudyCreateForm(request.POST)
                     if form.is_valid():
                         form.update_form(request, study_id)

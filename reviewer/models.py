@@ -53,20 +53,11 @@ class Categories(TimeStampedModel):
 
 
 class StudyList(TimeStampedModel):
-	def rand_string():
-		str_pool = string.digits + string.ascii_letters
-		return ("".join([random.choice(str_pool) for _ in range(6)])).lower()
-
-	def rand_letter():
-		str_pool = string.ascii_letters
-		return random.choice(str_pool).lower()
-
-	review_count = models.IntegerField(null=False)
-	prefix = models.CharField(max_length=50)
+	review_count = models.IntegerField(null=False, default=0)
 	category = models.ForeignKey(Categories, on_delete=models.CASCADE, null=True)
 	creator = models.ForeignKey(MyUser, on_delete=models.CASCADE)    
-	study_topic = models.CharField(max_length=30)
-	study_contect = models.TextField()
+	study_title = models.CharField(max_length=30)
+	study_content = models.TextField()
 
 	def review_count_up(self):
 		self.review_count += 1
