@@ -1,7 +1,5 @@
 import time
 from django.http import Http404
-from django.http import JsonResponse, HttpResponse
-from django.shortcuts import redirect, render
 
 from rest_framework import viewsets
 from rest_framework import permissions
