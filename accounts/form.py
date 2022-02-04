@@ -1,21 +1,25 @@
+from attr import field
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.hashers import make_password
+
 from django import forms
 
 from accounts.models import MyUser
 
 class LoginForm(forms.Form):
+	class Meta:
+		model = MyUser
+		field=(
+			"email",
+			"password",
+		)
+
 	email = forms.EmailField(
-			max_length=100, required=True, widget=forms.EmailInput(attrs={
-             "class" : "input-field",
-             "style" : "width:90%; height: 36.5px; padding : 9.75px 13px; margin-bottom: 2%;",
-             })
+			max_length=100, required=True
 	)
 	password = forms.CharField(
 		max_length=30, required=True,
-		widget=forms.PasswordInput(attrs={
-            "class" : "input-field",
-            "style" : "width:90%; height: 36.5px; padding : 9.75px 13px;",
-             })
+		widget=forms.PasswordInput()
 	)
 
 class RegisterForm(UserCreationForm):
@@ -23,9 +27,9 @@ class RegisterForm(UserCreationForm):
         model = MyUser
         fields=(
         "username",
+        "useremail",
         "password1",
         "password2",
-        "useremail",
         )
 
         
@@ -45,7 +49,9 @@ class RegisterForm(UserCreationForm):
     )
     def save(self, commit=True): # 저장하는 부분 오버라이딩
         user = super(RegisterForm, self).save(commit=False) # 본인의 부모를 호출해서 저장하겠다.
+        user.full_name = self.cleaned_data["username"]
         user.email = self.cleaned_data["useremail"]
+        user.password = make_password(self.cleaned_data["password1"])
         if commit:
             user.save()
         return user

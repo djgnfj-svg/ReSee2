@@ -1,6 +1,4 @@
-import random, string
 from typing import Dict
-from unicodedata import category
 
 from django.db import models
 from django.contrib.gis.geoip2 import GeoIP2

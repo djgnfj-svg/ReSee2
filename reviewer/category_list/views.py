@@ -10,6 +10,7 @@ from reviewer.utils import dateCalculation
 
 @login_required
 def category_view(request):
+    print(request.users_id)
     if request.method == "POST":
         cate_list = CateCreateForm(request.POST)
         if cate_list.is_valid():
@@ -40,11 +41,10 @@ def category_change_view(request, action, category_id):
 
 def study_list_view(request, category_id):
     form = StudyList.objects.order_by("created_at").filter(creator_id = request.user.id, category_id = category_id)
-    return render(request, "study_list.html", {"form" : form, "category_id":category_id})
+    return render(request, "study_list.html")
 
 @login_required
 def study_create_view(request, category_id):
-    msg = None
     if request.method == "POST":
         form = StudyCreateForm(request.POST)
         if form.is_valid():
@@ -55,7 +55,7 @@ def study_create_view(request, category_id):
             form =StudyCreateForm()
     else:
         form =StudyCreateForm()
-    return render(request, "study_create.html", {"form":form})
+    return render(request, "study_create.html")
 
 @login_required
 def study_change_view(request, category_id, action, study_id):

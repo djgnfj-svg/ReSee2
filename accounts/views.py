@@ -5,28 +5,29 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
+from pydantic import Json
 
-from accounts.form import MemberDelForm, MemberUpdateForm
+from accounts.form import LoginForm, MemberDelForm, MemberUpdateForm, RegisterForm
 from accounts.models import MyUser
 
 # Create your views here.
 @csrf_exempt
 def login_view(request):
     if request.method == "POST":
-        user_email = request.POST.get("user_email")
-        user_password = request.POST.get("user_password")
+        login_form = LoginForm(request.POST)
         res_data = {}
-        if not (user_email and user_password):
-            res_data['error'] = "모든 값을 입력해야 합니다."
+        if not login_form.is_valid():
+            print(login_form.errors.as_json())
+            return JsonResponse(login_form.errors.as_json(), safe=False)
         try :
-            user = MyUser.objects.get(email=user_email)
+            user = MyUser.objects.get(email=login_form.cleaned_data.get("email"))
         except MyUser.DoesNotExist:
             res_data['error'] = "잘못된 이메일 또는 패스워드 입니다."
+            return JsonResponse(request.POST, res_data)
         else :
-            if user.check_password(user_password):
+            if user.check_password(login_form.cleaned_data.get("password")):
                 login(request, user)
-        # return JsonResponse(request.POST, res_data)
-        # return render(request,  "home.html", json.dumps(res_data))
+                return redirect("home")
         return redirect("home")
     else :
         return render(request, "login.html")
@@ -40,34 +41,23 @@ def logout_view(request):
 @csrf_exempt
 def register_view(request):
     if request.method == 'POST':
-        username = request.POST.get('user_name',None)
-        useremail = request.POST.get('register_email',None)
-        password = request.POST.get('register_password',None)
-        repasswd = request.POST.get('confirm_password',None)
-
-        res_data ={}
-        if not (username and useremail and password and repasswd):
-            res_data['error'] = '모든 값을 입력해야 합니다.'
-        elif password != repasswd:
-            res_data['error'] ='비밀번호가 다릅니다.'
-
+        register = RegisterForm(request.POST)
+        useremail = request.POST.get('useremail',None)
+        res_data = {}
         try:
             user = MyUser.objects.get(email=useremail)
             if user:
-                res_data['error'] ='이미 가입된 회원입니다.'
-                return JsonResponse(request.POST, res_data)
+                res_data['error'] = 'This email is already subscribed.'
+                print(type(register.errors.as_json()))
+                return JsonResponse(res_data)
         except MyUser.DoesNotExist:
-            # 대문자 User 임에 주의
-            user = MyUser(
-                nickname = username,
-                email = useremail,
-                password = make_password(password)
-            )
-            user.save()
+            if register.is_valid():
+                login(request, register.save())
+                return redirect("home")
+            return JsonResponse(register.errors.as_json(), safe=False)
             # session 생성
-            user = MyUser.objects.get(email=useremail)
-            request.session['user'] = user.id
-            return redirect("home")
+            # user = MyUser.objects.get(email=useremail)
+            # request.session['user'] = user.id
     return render(request,'register.html')
 
 @csrf_exempt
@@ -82,7 +72,7 @@ def member_update_view(request):
             user.save()
     else:
         msg = None
-    return render(request, "member_modify.html", {"form_Update" : form_Update})
+    return render(request, "member_modify.html")
 
 @csrf_exempt
 @login_required
@@ -90,7 +80,6 @@ def member_del_view(request):
     form_del = MemberDelForm()
     if request.method == "POST":
         form_del = MemberDelForm(request.POST)
-        print(form_del.errors.as_json())
         if form_del.is_valid():
             user = request.user
             email = request.POST["useremail"]
@@ -98,4 +87,4 @@ def member_del_view(request):
             if user.check_password(raw_password):
                 user.delete()
                 return redirect("home")
-    return render(request, "member_del.html", {"form_del" : form_del})
+    return render(request, "member_del.html")

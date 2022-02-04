@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import (
     BaseUserManager, AbstractBaseUser,
     PermissionsMixin)
+
 # Create your models here.
 
 class MyUserManager(BaseUserManager):
@@ -27,27 +28,26 @@ class MyUserManager(BaseUserManager):
         u.save(using=self._db)
         return u
 
-
 class MyUser(AbstractBaseUser,  PermissionsMixin):
     email = models.EmailField(
         verbose_name='email',
         max_length=255,
         unique=True,
     )
-    nickname = models.CharField(
+    full_name = models.CharField(
         u'닉네임',
         max_length=10,
         blank=False,
         unique=True,
         default='')
 
+    organization = models.ForeignKey("reviewer.Organization", on_delete=models.DO_NOTHING, null=True)
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
-
     objects = MyUserManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['nickname']
+    REQUIRED_FIELDS = []
 
     def get_full_name(self):
         # The user is identified by their email address

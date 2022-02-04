@@ -41,7 +41,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
+LOGIN_URL = "/login"
 # Application definition
 AUTH_USER_MODEL = 'accounts.MyUser'
 INSTALLED_APPS = [
