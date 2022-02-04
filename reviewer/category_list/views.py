@@ -10,7 +10,6 @@ from reviewer.utils import dateCalculation
 
 @login_required
 def category_view(request):
-    print(request.users_id)
     if request.method == "POST":
         cate_list = CateCreateForm(request.POST)
         if cate_list.is_valid():

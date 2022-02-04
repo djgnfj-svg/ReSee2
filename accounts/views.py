@@ -23,7 +23,7 @@ def login_view(request):
             user = MyUser.objects.get(email=login_form.cleaned_data.get("email"))
         except MyUser.DoesNotExist:
             res_data['error'] = "잘못된 이메일 또는 패스워드 입니다."
-            return JsonResponse(request.POST, res_data)
+            return JsonResponse(res_data)
         else :
             if user.check_password(login_form.cleaned_data.get("password")):
                 login(request, user)
