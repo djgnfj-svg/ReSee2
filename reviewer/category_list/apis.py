@@ -25,8 +25,9 @@ class UserViewSet(viewsets.ModelViewSet):
 		#is_valid 하지 않으면
 		Resee_data = {
 			"status" :500,
-			"msg" : "카테고리 네임을 입력하셔야 합니다."
+			"msg" : serializer.errors["name"]
 		}
+
 		return Response(Resee_data)
 	
 	def retrieve(self, request, pk=None):
