@@ -10,10 +10,8 @@ from reviewer.models import Categories, StudyList
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.renderers import JSONRenderer
-from rest_framework.decorators import action, renderer_classes
-
+from rest_framework.decorators import api_view, renderer_classes
 class UserViewSet(viewsets.ModelViewSet):
-	print(Categories.objects)
 	queryset = Categories.objects.filter().order_by("created_at")
 	serializer_class = CateListSerializer
 	permission_classes = [permissions.IsAuthenticated]
@@ -40,11 +38,29 @@ class UserViewSet(viewsets.ModelViewSet):
 
 	def update(self, request, pk=None):
 		# PUT 메소드
-		pass
+		serializer = CateCreateSerializer(data=request.data)
+		if serializer.is_valid():
+			rtn = serializer.change(request, serializer.data, pk)
+			return Response(CateListSerializer(rtn).data, status=status.HTTP_201_CREATED)
+		#is_valid 하지 않으면
+		Resee_data = {
+			"status" :500,
+			"msg" : "카테고리 네임을 입력하셔야 합니다."
+		}
+		return Response(Resee_data)
 
 	def partial_update(self, request, pk=None):
 		# PATCH METHOD
-		pass
+		serializer = CateCreateSerializer(data=request.data)
+		if serializer.is_valid():
+			rtn = serializer.change(request, serializer.data)
+			return Response(CateListSerializer(rtn).data, status=status.HTTP_201_CREATED)
+		#is_valid 하지 않으면
+		Resee_data = {
+			"status" :500,
+			"msg" : "카테고리 네임을 입력하셔야 합니다."
+		}
+		return Response(Resee_data)
 
 	@renderer_classes([JSONRenderer])
 	def destroy(self, request, pk=None):
@@ -101,6 +117,8 @@ class StudyViewSet(viewsets.ModelViewSet):
 
 	def partial_update(self, request, pk=None):
 		# PATCH METHOD
+		# queryset = self.get_queryset().filter(pk=pk, creator_id = request.user.id)
+		# queryset.
 		pass
 
 	@renderer_classes([JSONRenderer])

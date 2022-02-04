@@ -46,13 +46,25 @@ class CateCreateSerializer(serializers.Serializer):
 		instance.creator_id = request.user.id
 		instance.category_count = data.get("category_count") + 1
 		if commit:
-				try:
-						instance.save()
-				except Exception as e:
-						print(e)
-				else:
-						pass
+			try:
+				instance.save()
+			except Exception as e:
+				print(e)
+			else:
+				pass
 		return instance
+	
+	def change(self, request, data, pk, commit=True):
+		instance = Categories.objects.filter(id=pk).first()
+		instance.name = data.get("name", None)
+		if commit:
+			try:
+				instance.save()
+			except Exception as e:
+				print(e)
+			else:
+				pass
+		return instance		
 
 class StudyCreateSerializer(serializers.Serializer):
 	study_title = serializers.CharField(max_length=50)
