@@ -37,7 +37,7 @@ class StudyListSerializer(serializers.ModelSerializer):
 
 
 class CateCreateSerializer(serializers.Serializer):
-	name = serializers.CharField(max_length=50)
+	name = serializers.CharField(max_length=20)
 	category_count = serializers.IntegerField(required=False, default=0)
 
 	def create(self, request, data, commit=True):

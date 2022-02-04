@@ -14,7 +14,12 @@ def category_view(request):
         cate_list = CateCreateForm(request.POST)
         if cate_list.is_valid():
             cate_list.save(request)
-        return JsonResponse(request.POST)
+            return JsonResponse(request.POST)
+            
+        else:
+            res_data = {}
+            res_data["error"] = "max_length = 20"
+            return JsonResponse(res_data)
     return render(request, "cate_list.html")
 
 @login_required

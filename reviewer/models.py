@@ -35,7 +35,7 @@ class EmailVerification(TimeStampedModel):
 	verified = models.BooleanField(default=False)
 
 class Categories(TimeStampedModel):
-	name = models.CharField(max_length=100,null=True)
+	name = models.CharField(max_length=20,null=True)
 	creator = models.ForeignKey(MyUser, on_delete=models.CASCADE)
 	category_count = models.IntegerField(default=0)
 
