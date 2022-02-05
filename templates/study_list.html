@@ -6,14 +6,16 @@
 {% endblock %}
 {% block content %}
 <script>
-   $.ajax({
+  var link = document.location.href.split("/")[4];
+  $.ajax({
       type : "GET",
-      url: " {% url 'cate_list' %}",
+      url: "/api/category_list/"+link+"/study_list" ,
       dataType :'json',
       success: function(json){
-        alert(JSON.stringify(json));
+        alert(JSON.stringify(link));
       }
     });
+  alert(link)
 </script>
 <style>
  .menu a{cursor:pointer;}
@@ -27,8 +29,6 @@
    list-style: none;
    float: left;
  }
- 
-
 </style>
 
 <header style="font-weight: bold; font-size: 30px; margin-top: 1%; margin-left: 3%; margin-bottom: 1%;">
