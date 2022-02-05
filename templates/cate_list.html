@@ -8,55 +8,57 @@
 {% endblock %}
 {% block content %}
 
-
+<!-- <form type="POST">
+  <a class= 'temp' href='/category_list/"+json[i].id+"/study_list'>
+    json[i].name
+    </a>
+</form> -->
 
 <script>
   // html dom 이 다 로딩된 후 실행된다.
-  $(document).ready(function () {
-    // menu 클래스 바로 하위에 있는 a 태그를 클릭했을때
-    $(".menu>a").click(function () {
-      var submenu = $(this).next("ul");
 
-      // submenu 가 화면상에 보일때는 위로 보드랍게 접고 아니면 아래로 보드랍게 펼치기
-      if (submenu.is(":visible")) {
-        submenu.slideUp();
-      } else {
-        submenu.slideDown();
-      }
-    });
-  });
 
   $.ajax({
-        type : "GET",
-        url : "/api/category_list",
-        dataType : 'json',
-        success : function(json){
-          for(var i = 0; i < json.length; i++){
-            $("#mode").append(" "+
-            "<tr>"+
-              "<th scope='row'>"+json[i].id+"</th>"+
-                "<td>"+
-                  "<li class='menu'>"+
-                    json[i].name+
-                "</li>"+
-              "</td>"+
-              "<td> <li>"+json[i].category_count+"</li></td>"+
-             "<td><li>"+json[i].created_at+"</li></td>"+
-           "<td>"+
-            "<a>"+
-              "<button type='submit' id='start' >"+
-                "복습 시작"+
-              "</button>"+
-            "</a>"+
-          "</td>"+
-        "</tr>)");
-              }
-          },
-        error: function(err){
-          console.log(err); //오류발생시 콘솔 로그 출력
-        },
-      });
-  
+    type: "GET",
+    url: "/api/category_list",
+    dataType: 'json',
+    success: function (json) {
+      for (var i = 0; i < json.length; i++) {
+        $("#mode").append(" " +
+          "<tr>" +
+          "<th class='number'  scope='row'>" + json[i].id + "</th>" +
+          "<td>" +
+          "<li class='menu'>" +
+          
+          "<a class='temp'>"+
+          json[i].name +
+          "</a>"+
+
+          "</li>" +
+          "<a href='#'>"+
+          "<img src= {% static 'img/edit.png' %}>"+   
+          "</a>"+
+          "</td>" +
+          "<td> <li>" + json[i].category_count + "</li></td>" +
+          "<td><li>" + json[i].created_at + "</li></td>" +
+          "<td>" +
+          "<a>" +
+          "<button type='submit' id='start' >" +
+          "시작" +
+          "</button>" +
+          "<a href='#'>"+
+          "<img src= {% static 'img/clear.png' %}>"+  
+          "</a>"+
+          "</td>" +
+          "</tr>)");
+      }
+      
+    },
+    error: function (err) {
+      console.log(err); //오류발생시 콘솔 로그 출력
+    },
+  });
+
 </script>
 <style>
   .menu a {
@@ -72,43 +74,48 @@
     padding-left: 0%;
     float: left;
   }
-
+  img{
+    background-color: white;
+    border: none;
+    margin-left: 7%;
+  }
   li {
     list-style: none;
     float: left;
   }
-  button#start{
-    background-color:black;
+
+  button#start {
+    background-color: black;
     width: 100px;
     height: 35px;
     color: white;
     border: 1px solid;
     border-radius: 0.5rem 0.5rem 0.5rem 0.5rem;
   }
-              
 </style>
 
 <header>
-  <div style="font-weight: bold; font-size: 30px; margin-top: 1%; margin-left: 3%; margin-bottom: 1%;">
-    Category_List
+  <div style="margin-left: 10%;">
+    <a style="font-size: 20px; font-weight: bold;">
+      Category_List
+    </a>
+    </div>
+    <div style="text-align: right;">
+      <button type="submit" class="Add_Cate" id="Add"
+        style="background-color: white; color:black; width: 100px; height: 30px; border-radius: 1rem 1rem 1rem 1rem;">
+        Add
+      </button>
   </div>
-  <div style="text-align: right; margin-right: 2rem;">
-    <button type="submit" class="Add_Cate" id="Add"
-      style="background-color: white; color:black; width: 100px; height: 30px; border-radius: 1rem 1rem 1rem 1rem;">
-      Add
-    </button>
   </div>
-</div>
 </header>
 
-<div>
-  <a id></a>
+
 </div>
-<div>
+<div style="margin-left: 15vw; margin-right: 15vw;">
   <table class="table align-items-center table-flush">
     <thead class="thead-light">
       <tr>
-        <th scope="col">No</th>
+        <th scope="col">No.</th>
         <th scope="col">Title</th>
         <th scope="col">
           ReSee_Number
@@ -119,7 +126,9 @@
     </thead>
     <tbody id="mode">
       <!-- 생성 시작부분 -->
-      
+      <a class="temp2" type="submit">
+        bbbbasd
+      </class>
       <!-- 끝 부분 -->
     </tbody>
   </table>
@@ -127,89 +136,97 @@
 
 <script type="text/javascript">
 
-  $(document).ready(function(){
+  $(document).ready(function () {
     // add버튼 클릭시 
-    $(".Add_Cate").click(function(){
-      var input = prompt("과목 이름을 입력해주세요","");
+    $(".Add_Cate").click(function () {
+      var input = prompt("과목 이름을 입력해주세요", "");
       var name = input.trim();
-      
-      if(name == ""){
-          alert("값을 입력해주세요");
-      // }else if(name.length >= 16){
-      //     alert("16글자 미만으로 입력해주세요");
-      }else{
+
+      if (name == "") {
+        alert("값을 입력해주세요");
+      } else {
         //Post 보내기
         $.ajax({
           type: "POST",
           url: "/api/category_list/",
-          headers : {
-            'X-CSRFTOKEN' : '{{ csrf_token }}'
+          headers: {
+            'X-CSRFTOKEN': '{{ csrf_token }}'
           },
-          data :{
+          data: {
             name
-          }, 
+          },
           dataType: "json",
-          success : function(json) {
-            if(json.msg == null){
+          success: function (json) {
+            //에러메세지가 없을때 (과목정보값이 20글자 미만일때)
+            if (json.msg == null) {
               alert("성공");
               //GET으로 받기
               $.ajax({
-                type : "GET",
-                url : "/api/category_list/",
-                dataType : 'json',
-                success : function(json){
-                  $("#mode").append(" "+
-                    "<tr>"+
-                      "<th scope='row'>"+json[json.length - 1].id+"</th>"+
-                        "<td>"+
-                          "<li class='menu'>"+
-                            json[json.length - 1].name+
-                        "</li>"+
-                      "</td>"+
-                      "<td> <li>"+json[json.length - 1].category_count+"</li></td>"+
-                     "<td><li>"+json[json.length - 1].created_at+"</li></td>"+
-                   "<td>"+
-                    "<a>"+
-                      "<button type='submit' id='start' >"+
-                        "복습 시작"+
-                      "</button>"+
-                    "</a>"+
-                  "</td>"+
-                "</tr>)");
-                  },
-                error: function(err){
+                type: "GET",
+                url: "/api/category_list/",
+                dataType: 'json',
+                success: function (json) {
+                  $("#mode").append(" " +
+                    "<tr>" +
+                    "<th scope='row'>" + json[json.length - 1].id + "</th>" +
+                    "<td>" +
+                    "<li class='menu'>" +
+                    json[json.length - 1].name +
+                    "</li>" +
+                    "</td>" +
+                    "<td> <li>" + json[json.length - 1].category_count + "</li></td>" +
+                    "<td><li>" + json[json.length - 1].created_at + "</li></td>" +
+                    "<td>" +
+                    "<a>" +
+                    "<button type='submit' id='start' >" +
+                    "시작" +
+                    "</button>" +
+                    "</a>" +
+                    "</td>" +
+                    "</tr>)");
+                },
+                error: function (err) {
                   console.log(err); //오류발생시 콘솔 로그 출력
                 },
               });
-            }else if(json.msg != null){
+              //20글자 이상일때는 에러메시지를 보여준ㄴ다
+            } else if (json.msg != null) {
               alert(json.msg);
             }
           },
+          //Post 실패시 에러
           error: function (request, status, error) {
             alert("code:" + request.status + "\n" + "error:" + error);
           }
         });
-        
-    }
-      })
+
+      }
     })
-  
+  })
 
-    // function bob(){
-    //   $.ajax({
-    //     type : "GET",
-    //     url : "/api/category_list",
-    //     dataType : 'json',
-    //     success : function(json){
-    //       $.each(json, function(index,item){
+  $(document).ready(function () {
+    // menu 클래스 바로 하위에 있는 a 태그를 클릭했을때
+    $(".temp").click(function () {
+      alert("click");
+      // var number = document.getElementsByClassName("number");
+      // $.ajax({
+      //   type: "POST",
+      //   url: "{% url 'cate_list' %}",
+      //   dataType: 'json',
+      //   data : {
+      //     number
+      //   },
+      //   success:function(json){
+      //     alert(number)
+      //   },
+      //   error:function(error){
+      //     alert(error);
+      //   }
+      // });
+    });
+  });
 
-    //       });
-    //     },
-    //     error: function(err){
-    //       console.log(err); //오류발생시 콘솔 로그 출력
-    //     },
-    //   });
-    // }
+
 </script>
 
 {% endblock %}

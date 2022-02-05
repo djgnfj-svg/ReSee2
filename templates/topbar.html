@@ -23,7 +23,7 @@
 
 <body>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid" style="margin-top: 10px; margin-bottom: 10px; margin-left: 15%;">
+    <div class="container-fluid" style="margin-top: 10px; margin-bottom: 10px; margin-left: 13%;">
       <a class="navbar-brand" href="/">ReSee</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -42,9 +42,10 @@
           <li class="nav-item">
             <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
           </li>
+
           {% if user.is_active %}
           <li class="nav-item" id="login_temp">
-            <a class="nav-link" href="{% url 'logout' %}" style="margin-left:-15%;">Logout</a>
+            <a class="nav-link" href="{% url 'logout' %}">Logout</a>
           </li>
           <li class="nav-item" id="login_temp">
             <div class="dropdown">

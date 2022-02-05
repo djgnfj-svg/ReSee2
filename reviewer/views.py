@@ -4,3 +4,6 @@ from django.shortcuts import render
 
 def home_view(request):
 	return render(request, "home.html")
+
+def payplan_view(request):
+	return render(request,"payplan.html")
