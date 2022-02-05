@@ -25,7 +25,7 @@
       for (var i = 0; i < json.length; i++) {
         $("#cate_board").append(" " +
           "<tr>" +
-          "<th class='number'  scope='row'>" + json[i].id + "</th>" +
+          "<th id='number'  scope='row'>" + json[i].id + "</th>" +
           "<td>" +
           "<li class='menu'>" +
           "<a href='/category_list/"+json[i].id+"/study_list' id='sad'>"+
@@ -43,41 +43,20 @@
           "<button type='submit' id='start' >" +
           "시작" +
           "</button>" +
-          "<a id='clear' href='#'>"+
+          "<a id='clear"+json[i].id+"' href='#'  onclick='reply_click(this.id)'>"+
           "<img src= {% static 'img/clear.png' %}>"+  
           "</a>"+
           "</td>" +
-          "</tr>)");
+          "</tr>)");  
         }
-        $("#clear").click(function () {
-          $.ajax({
-            method :"DELETE",
-            url : "api/category_list/"+json[i].id+"/",
-            dataType:"json",
-            success:function(json){
-              alert('hello');
-            },
-            error: function (request, status, error) {
-              alert("code = " + request.status +" error = " + error); // 실패 시 처리
-            },
-          })
-        });
       },
       error: function (err) {
         console.log(err); //오류발생시 콘솔 로그 출력
-    },
-  });
-  function clear(){
-    alert("click");
-    // $.ajax({
-    //   type="PUT",
-    //   url = "api/category_list/"+json[i].id+"/",
-    //   dataType = "json",
-    //   data = {
-    //     name : "test"
-    //   },
-    //   })
-    }
+      },
+    });
+    
+  </script>
+<script>
 </script>
 <style>
   .menu a {
@@ -152,8 +131,6 @@
 </div>
 
 <script type="text/javascript">
-
-
   $(document).ready(function () {
     // add버튼 클릭시 
     $(".Add_Cate").click(function () {
@@ -204,14 +181,11 @@
                     "<button type='submit' id='start' >" +
                     "시작" +
                     "</button>" +
-                    "<a>" +
+                    "<a id='clear"+json[json.length -1].id+"' href='#'  onclick='reply_click(this.id)'>" +
                     "<img src= {% static 'img/clear.png' %}>" +
                     "</a>" +
                     "</td>" +
                     "</tr>)");
-                    $("#sad").click(function (){
-                        alert("click");
-                      });
                 },
                 error: function (err) {
                   console.log(err); //오류발생시 콘솔 로그 출력
@@ -231,8 +205,29 @@
     })
   })
 
-  $(document).ready(function () {
+  function reload(){
+    window.location.reload()
+  }
+  
+  function reply_click(clicked_id) {
+    let str=clicked_id.split("clear")[1]
+      $.ajax({
+        method: "DELETE",
+        url: "/api/category_list/" + str + "/",
+        dataType: "json",
+        headers: {
+          'X-CSRFTOKEN': '{{ csrf_token }}'
+        },
+        success: function (json) {
+          alert("삭제 성공!");
+          reload();
+        },
+        error: function (request, status, error, err) {
+          alert("code = " + request.status + msg + " error = " + error + err); // 실패 시 처리
+        },
     });
+  }
+  
 </script>
 
 {% endblock %}
