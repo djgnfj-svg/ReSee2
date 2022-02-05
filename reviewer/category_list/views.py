@@ -45,7 +45,9 @@ def category_change_view(request, action, category_id):
 
 def study_list_view(request, category_id):
     form = StudyList.objects.order_by("created_at").filter(creator_id = request.user.id, category_id = category_id)
-    return render(request, "study_list.html")
+    res_data = {}
+    res_data["category_number"] = category_id
+    return render(request, "study_list.html", res_data)
 
 @login_required
 def study_create_view(request, category_id):

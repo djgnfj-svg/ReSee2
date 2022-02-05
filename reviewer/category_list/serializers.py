@@ -45,7 +45,6 @@ class CateCreateSerializer(serializers.Serializer):
 		instance.name = data.get("name", None)
 		instance.creator_id = request.user.id
 		instance.category_count = data.get("category_count") + 1
-		print("temp")
 		if commit:
 			try:
 				instance.save()
@@ -72,16 +71,13 @@ class StudyCreateSerializer(serializers.Serializer):
 	study_content = serializers.CharField(max_length=100)
 	review_count = serializers.IntegerField(default=0)
 
-
-	def create(self, request, data, category_id, commit=True):
+	def create(self, request, data, commit=True):
 		instance = StudyList()
 		instance.study_title = data.get("study_title", None)
 		instance.study_content = data.get("study_content", None)
 		instance.review_count = data.get("review_count")
-		instance.category = Categories.objects.filter(id=category_id).first()
+		instance.category = Categories(request.data.get("category",None))
 		instance.creator_id = request.user.id
-		print(data)
-		print(request.POST)
 		if commit:
 				try:
 						instance.save()

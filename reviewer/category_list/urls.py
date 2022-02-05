@@ -7,7 +7,8 @@ from reviewer.category_list.apis import *
 
 router = routers.DefaultRouter()
 router.register(r'category_list', UserViewSet)
-router.register(r'category_list/(?P<category_id>\d+)/study_list', StudyViewSet)
+router.register(r'category_list/(?P<category_id>\d+)/study_list', CateStudyViewSet)
+router.register(r'study_list', StudyViewSet)
 
 
 # category_list/~
