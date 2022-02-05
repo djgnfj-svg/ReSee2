@@ -15,11 +15,6 @@ def category_view(request):
         if cate_list.is_valid():
             cate_list.save(request)
             return JsonResponse(request.POST)
-            
-        else:
-            res_data = {}
-            res_data["error"] = "max_length = 20"
-            return JsonResponse(res_data)
     return render(request, "cate_list.html")
 
 @login_required
@@ -27,67 +22,42 @@ def category_change_view(request, action, category_id):
     if request.method == "POST":
         list_data = Categories.objects.filter(id=category_id)
         if list_data.exists():
-            if list_data.first().creator_id != request.user.id:
-                msg = "자신이 소유하지 않은 list 입니다리~~"
-            else:
+            # if list_data.first().creator_id != request.user.id:
+            #     msg = "자신이 소유하지 않은 list 입니다리~~"
+            # else:
                 if action == "delete":
                     list_data.delete()
                 elif action == "update":
                     form = CateCreateForm(request.POST)
                     form.update_form(request, category_id)
-    elif request.method == "GET" and action == "update":
-        list_data = Categories.objects.filter(pk=category_id).first()
-        form = CateCreateForm(instance=list_data)
-        return render(request, "cate_create.html", {"form" : form, "is_update":True})
-    elif request.method == "GET" and action == "study_list":
-        return study_list_view(request, category_id)
+                return JsonResponse(request.POST)
     return redirect("cate_list")
 
-def study_list_view(request, category_id):
-    form = StudyList.objects.order_by("created_at").filter(creator_id = request.user.id, category_id = category_id)
-    res_data = {}
-    res_data["category_number"] = category_id
-    return render(request, "study_list.html", res_data)
-
 @login_required
-def study_create_view(request, category_id):
+def study_list_view(request, category_id):
     if request.method == "POST":
         form = StudyCreateForm(request.POST)
         if form.is_valid():
             temp = Categories.objects.filter(id=category_id).first()
             form.save(request, temp.id)
-            return redirect("study_list", category_id)
-        else:
-            form =StudyCreateForm()
-    else:
-        form =StudyCreateForm()
-    return render(request, "study_create.html")
+        return JsonResponse(request.POST)
+    return render(request, "study_list.html")
 
 @login_required
 def study_change_view(request, category_id, action, study_id):
     if request.method == "POST":
         list_data = StudyList.objects.filter(id=study_id)
         if list_data.exists():
-            if list_data.first().creator_id != request.user.id:
-                msg = "자신이 소유하지 않은 list 입니다리~~"
-            else:
+            # if list_data.first().creator_id != request.user.id:
+            #     msg = "자신이 소유하지 않은 list 입니다리~~"
+            # else:
                 if action == "delete":
-                    msg = f"{list_data.first().study_title} 삭제 완료"
                     list_data.delete()
-                    messages.add_message(request, messages.INFO, msg)
                 elif action == "update":
-                    msg = f"{list_data.first().study_title} 수정 완료"
                     form = StudyCreateForm(request.POST)
                     if form.is_valid():
                         form.update_form(request, study_id)
-                    else :
-                        msg = f"에메함 "
-                    print(form.errors.as_json())
-                    messages.add_message(request, messages.INFO, msg)
-    elif request.method == "GET" and action == "update":
-        list_data = StudyList.objects.filter(pk=study_id).first()
-        form = StudyCreateForm(instance=list_data)
-        return render(request, "study_create.html", {"form" : form, "is_update":True})
+                return JsonResponse(request.POST)
     return redirect("study_list", category_id)
 
 def study_review_view(request, category_id, study_id):
@@ -96,7 +66,6 @@ def study_review_view(request, category_id, study_id):
     except:
         return redirect("cate_list")
     review_list = dateCalculation(base_time, StudyList.objects.filter(category_id = category_id))
-    print(review_list)
     prev_button = False
     finish_button = False
     if study_id == 99:
@@ -120,7 +89,6 @@ def study_review_view(request, category_id, study_id):
             finish_button = True
         form = StudyReviewForm(instance=review_list[study_id])
     except IndexError:
-        messages.add_message(request, messages.INFO, "복습할 껀덕지가 없다 이말이야")
         return redirect("cate_list")
     else:
         return render(request, "study_review.html", {"form" : form, "category_id" : category_id,
