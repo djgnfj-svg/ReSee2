@@ -30,7 +30,7 @@ def category_change_view(request, action, category_id):
                 elif action == "update":
                     form = CateCreateForm(request.POST)
                     form.update_form(request, category_id)
-                return JsonResponse(request.POST)
+                # return JsonResponse(request.POST)
     return redirect("cate_list")
 
 @login_required

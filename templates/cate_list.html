@@ -15,27 +15,24 @@
 </form> -->
 
 <script>
-  // html dom 이 다 로딩된 후 실행된다.
-
-
+ 
+  //카테고리 리스트 GET으로 가져오기
   $.ajax({
     type: "GET",
-    url: "/api/category_list",
+    url: "/api/category_list/",
     dataType: 'json',
     success: function (json) {
       for (var i = 0; i < json.length; i++) {
-        $("#mode").append(" " +
+        $("#cate_board").append(" " +
           "<tr>" +
           "<th class='number'  scope='row'>" + json[i].id + "</th>" +
           "<td>" +
           "<li class='menu'>" +
-          
-            "<a href='/category_list/"+json[i].id+"/study_list'>"+
+          "<a href='/category_list/"+json[i].id+"/study_list' id='sad'>"+
           json[i].name +
           "</a>"+
-
           "</li>" +
-          "<a href='#'>"+
+          "<a>"+
           "<img src= {% static 'img/edit.png' %}>"+   
           "</a>"+
           "</td>" +
@@ -46,29 +43,51 @@
           "<button type='submit' id='start' >" +
           "시작" +
           "</button>" +
-          "<a href='#'>"+
+          "<a id='clear' href='#'>"+
           "<img src= {% static 'img/clear.png' %}>"+  
           "</a>"+
           "</td>" +
           "</tr>)");
-      }
-      
-    },
-    error: function (err) {
-      console.log(err); //오류발생시 콘솔 로그 출력
+        }
+        $("#clear").click(function () {
+          $.ajax({
+            method :"DELETE",
+            url : "api/category_list/"+json[i].id+"/",
+            dataType:"json",
+            success:function(json){
+              alert('hello');
+            },
+            error: function (request, status, error) {
+              alert("code = " + request.status +" error = " + error); // 실패 시 처리
+            },
+          })
+        });
+      },
+      error: function (err) {
+        console.log(err); //오류발생시 콘솔 로그 출력
     },
   });
-
+  function clear(){
+    alert("click");
+    // $.ajax({
+    //   type="PUT",
+    //   url = "api/category_list/"+json[i].id+"/",
+    //   dataType = "json",
+    //   data = {
+    //     name : "test"
+    //   },
+    //   })
+    }
 </script>
 <style>
   .menu a {
     cursor: pointer;
   }
-
+  
   .menu .hide {
     display: none;
   }
-
+  
   ul {
     list-style: none;
     padding-left: 0%;
@@ -124,17 +143,16 @@
         <th scope="col">Action</th>
       </tr>
     </thead>
-    <tbody id="mode">
+    <tbody id="cate_board">
       <!-- 생성 시작부분 -->
-      <a class="temp2" type="submit">
-        bbbbasd
-      </class>
+      
       <!-- 끝 부분 -->
     </tbody>
   </table>
 </div>
 
 <script type="text/javascript">
+
 
   $(document).ready(function () {
     // add버튼 클릭시 
@@ -166,13 +184,18 @@
                 url: "/api/category_list/",
                 dataType: 'json',
                 success: function (json) {
-                  $("#mode").append(" " +
+                  $("#cate_board").append(" " +
                     "<tr>" +
                     "<th scope='row'>" + json[json.length - 1].id + "</th>" +
                     "<td>" +
                     "<li class='menu'>" +
+                    "<a href='/category_list/" + json[json.length - 1].id + "/study_list' id='sad'>" +
                     json[json.length - 1].name +
+                    "</a>" +
                     "</li>" +
+                    "<a>" +
+                    "<img src= {% static 'img/edit.png' %}>" +
+                    "</a>" +
                     "</td>" +
                     "<td> <li>" + json[json.length - 1].category_count + "</li></td>" +
                     "<td><li>" + json[json.length - 1].created_at + "</li></td>" +
@@ -181,15 +204,20 @@
                     "<button type='submit' id='start' >" +
                     "시작" +
                     "</button>" +
+                    "<a>" +
+                    "<img src= {% static 'img/clear.png' %}>" +
                     "</a>" +
                     "</td>" +
                     "</tr>)");
+                    $("#sad").click(function (){
+                        alert("click");
+                      });
                 },
                 error: function (err) {
                   console.log(err); //오류발생시 콘솔 로그 출력
                 },
               });
-              //20글자 이상일때는 에러메시지를 보여준ㄴ다
+              //20글자 이상일때는 에러메시지를 보여준다
             } else if (json.msg != null) {
               alert(json.msg);
             }
@@ -199,34 +227,12 @@
             alert("code:" + request.status + "\n" + "error:" + error);
           }
         });
-
       }
     })
   })
 
   $(document).ready(function () {
-    // menu 클래스 바로 하위에 있는 a 태그를 클릭했을때
-    $(".temp").click(function () {
-      alert("click");
-      // var number = document.getElementsByClassName("number");
-      // $.ajax({
-      //   type: "POST",
-      //   url: "{% url 'cate_list' %}",
-      //   dataType: 'json',
-      //   data : {
-      //     number
-      //   },
-      //   success:function(json){
-      //     alert(number)
-      //   },
-      //   error:function(error){
-      //     alert(error);
-      //   }
-      // });
     });
-  });
-
-
 </script>
 
 {% endblock %}

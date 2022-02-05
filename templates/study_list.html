@@ -6,16 +6,7 @@
 {% endblock %}
 {% block content %}
 <script>
-  var link = document.location.href.split("/")[4];
-  $.ajax({
-      type : "GET",
-      url: "/api/category_list/"+link+"/study_list" ,
-      dataType :'json',
-      success: function(json){
-        alert(JSON.stringify(link));
-      }
-    });
-  alert(link)
+  
 </script>
 <style>
  .menu a{cursor:pointer;}
@@ -47,50 +38,44 @@
         <th scope="col">Action</th>
       </tr>
     </thead>
-    <tbody>
-      <tr>
-        <th scope="row">1</th>
-        <td>
-          <li class="menu">
-            <a>Python/Java<br></a>
-            <ul class="hide">
-              <div style="border: 1px solid black;">
-                  <li>Study_List</li>
-              </div>
+    <tbody id=study_board>
 
-            </ul>
-        </li>
-        </td>
-        <td>2022-01-31 23:22:00</td>
-        <td>
-            <a>
-              <button style="background-color:black; width: 100px; height: 35px; color: white; border: 1px solid; border-radius: 0.5rem 0.5rem 0.5rem 0.5rem;">
-                내용보기
-              </button>
-            </a>
-        </td>
-      </tr>
-
-      <tr>
-        <th scope="row">2</th>
-        <td> Leag of legend </td>
-        </td>
-        <td>2022-02-12 23:22:00</td>
-        <td>
-            <a>
-              <button style="background-color:black; width: 100px; height: 35px; color: white; border: 1px solid; border-radius: 0.5rem 0.5rem 0.5rem 0.5rem;">
-                복습 시작
-              </button>
-              <span class="material-icons-outlined">
-                edit
-                </span>
-              <img src="" alt="">
-            </a>
-        </td>
-      </tr>
+      
 
     </tbody>
   </table>
 
 </div>
+<script>
+  var link = document.location.href.split("/")[4];
+  $.ajax({
+      type : "GET",
+      url: "/api/category_list/"+link+"/study_list" ,
+      dataType :'json',
+      success: function(json){
+        alert(JSON.stringify(json.length));
+      for (i = 0; i < json.length; i++) {
+        $("#study_board").append(" " +
+          "<tr>" +
+          "<th scope='row'>" +json[i].id + "</th>" +
+          "<td>" +
+          "<li class='menu'>" +
+          "<a>" + json[i].study_title + "</a>" +
+          "</li>" +
+          "</td>" +
+          "<td>" + json[i].updated_at + "</td>" +
+          "<td>" +
+          "<a>" +
+          "<button style='background-color:black; width: 100px; height: 35px;" +
+          "color: white; border: 1px solid; border-radius: 0.5rem 0.5rem 0.5rem 0.5rem;'>" +
+          "내용보기" +
+          "</button>" +
+          "</a>" +
+          "</td>" +
+          "</tr>"
+        )
+      }
+    }
+  });
+</script>
 {% endblock %}
