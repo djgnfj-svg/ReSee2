@@ -1,12 +1,8 @@
-from tkinter.tix import Tree
-from unicodedata import category
-from xml.etree.ElementInclude import default_loader
 from django.contrib.auth.models import User
-
-from accounts.models import MyUser
 
 from rest_framework import serializers
 
+from accounts.models import MyUser
 from reviewer.models import Categories, StudyList
 
 class UserBaseSerializer(serializers.ModelSerializer):

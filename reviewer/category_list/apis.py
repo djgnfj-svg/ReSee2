@@ -45,9 +45,6 @@ class UserViewSet(viewsets.ModelViewSet):
 			rtn = serializer.change(request, serializer.data, pk)
 			return Response(CateListSerializer(rtn).data, status=status.HTTP_201_CREATED)
 		#is_valid 하지 않으면
-		# print(serializer)
-		print(request.data)
-		print(request.body)
 		Resee_data = {
 			"status" :500,
 			"msg" : "카테고리 네임을 입력하셔야 합니다."
@@ -69,11 +66,9 @@ class UserViewSet(viewsets.ModelViewSet):
 	@renderer_classes([JSONRenderer])
 	def destroy(self, request, pk=None):
 		queryset = self.get_queryset().filter(pk=pk, creator_id = request.user.id)
-		print("test1")
 		if not queryset.exists():
 			raise Http404
 		queryset.delete()
-		print("test")
 		return Response({"msg": "ok"})
 
 	def list(self, request):
@@ -81,13 +76,10 @@ class UserViewSet(viewsets.ModelViewSet):
 		time.sleep(0.05)
 		queryset = self.get_queryset().all().filter(creator_id=request.user.id)
 		serializer = CateListSerializer(queryset, many=True)
-		print("GET으로 검색", queryset.last())
 		return Response(serializer.data)
 	
 	# @action(detail=True,list=True methods=["get"])
 	# def study_list(self, request, pk=None):
-	# 	print(self)
-	# 	print(request)
 	# 	# return redirect("api/category_list/{}/study_list".format(pk))
 	# 	return Response("api/category_list/{}/study_list".format(pk))
 	# 	return redirect("")
