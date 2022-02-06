@@ -29,15 +29,16 @@ def study_list_view(request, category_id):
 
 @login_required
 def study_create_view(request, category_id):
+    
     if request.method == "POST":
         form = StudyCreateForm(request.POST)
+        print("Test2")
+        print(form)
         if form.is_valid():
             temp = Categories.objects.filter(id=category_id).first()
             form.save(request, temp.id)
             return redirect("study_list", category_id)
-        else:
-            form =StudyCreateForm()
-    print("Test")
+    print("Test2")
     return render(request, "study_create.html")
 
 @login_required

@@ -1,6 +1,4 @@
 import time
-from turtle import Turtle
-from unicodedata import category
 from django.http import Http404
 
 from rest_framework import viewsets
@@ -78,16 +76,6 @@ class UserViewSet(viewsets.ModelViewSet):
 		print("test")
 		return Response({"msg": "ok"})
 
-	# @renderer_classes([JSONRenderer])
-	# def delete(self, request, pk=None):
-	# 	queryset = self.get_queryset().filter(pk=pk, creator_id = request.user.id)
-	# 	print("test1")
-	# 	if not queryset.exists():
-	# 		raise Http404
-	# 	queryset.delete()
-	# 	print("test")
-	# 	return Response({"msg": "ok"})
-
 	def list(self, request):
 		# GET ALL
 		time.sleep(0.05)
@@ -102,7 +90,7 @@ class UserViewSet(viewsets.ModelViewSet):
 	# 	print(request)
 	# 	# return redirect("api/category_list/{}/study_list".format(pk))
 	# 	return Response("api/category_list/{}/study_list".format(pk))
-		# return redirect("")
+	# 	return redirect("")
 
 
 class CateStudyViewSet(viewsets.ModelViewSet):
@@ -114,7 +102,6 @@ class CateStudyViewSet(viewsets.ModelViewSet):
 		# POST METHOD
 		serializer = StudyCreateSerializer(data=request.data)
 		if serializer.is_valid():
-			print("test1")
 			rtn = serializer.create(request, serializer.data, category_id)
 			return Response(StudyListSerializer(rtn).data, status=status.HTTP_201_CREATED)
 		#is_valid 하지 않으면
@@ -124,7 +111,7 @@ class CateStudyViewSet(viewsets.ModelViewSet):
 		}
 		return Response(Resee_data)
 
-	def retrieve(self, request, pk=None):
+	def retrieve(self, request, category_id, pk=None):
 		#Detail Get
 		queryset = self.get_queryset().filter(pk=pk).first()
 		serializer = StudyListSerializer(queryset)
@@ -148,7 +135,6 @@ class CateStudyViewSet(viewsets.ModelViewSet):
 	def list(self, request, category_id):
 		# GET ALL
 		time.sleep(0.05)
-		print("여기냐?")
 		queryset = self.get_queryset().all().filter(creator_id=request.user.id, category_id = category_id)
 		serializer = StudyListSerializer(queryset, many=True)
 		return Response(serializer.data)

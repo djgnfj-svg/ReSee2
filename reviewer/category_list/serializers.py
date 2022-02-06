@@ -76,7 +76,7 @@ class StudyCreateSerializer(serializers.Serializer):
 		instance.study_title = data.get("study_title", None)
 		instance.study_content = data.get("study_content", None)
 		instance.review_count = data.get("review_count")
-		instance.category = Categories(request.data.get("category",None))
+		instance.category = Categories.objects.filter(id = request.data.get("category",None)).first()
 		instance.creator_id = request.user.id
 		if commit:
 				try:

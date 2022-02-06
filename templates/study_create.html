@@ -45,6 +45,7 @@
         var link = document.location.href.split("/")[4];
         var study_title = $('#topic').val();
         var study_content = $('#content').val();
+        var category = link;
         $.ajax({
             type : "POST",
             url: "/api/category_list/" + link+ "/study_list/",
@@ -54,15 +55,17 @@
             },
             data : {
                 study_title,
-                study_content   
+                study_content,
+                category
             },
             success: function(json){
                 alert("성공");
+                location.href = "/category_list/" + link+ "/study_list/";
             },
             error:function(request,status,error){
                 alert("code:"+request.status+"\n"+"error:"+error);
-       }
-     });
+            }  
+    });
     }
 </script>
 {% endblock %} 
