@@ -28,11 +28,11 @@
           "<th id='number'  scope='row'>" + json[i].id + "</th>" +
           "<td>" +
           "<li class='menu'>" +
-          "<a href='/category_list/"+json[i].id+"/study_list' id='sad'>"+
+          "<a href='/category_list/"+json[i].id+"/study_list' id='name"+json[i].id+"'>"+
           json[i].name +
           "</a>"+
           "</li>" +
-          "<a>"+
+          "<a href='#' id=' edit"+json[i].id+" ' onclick='edit_click(this.id)'>"+
           "<img src= {% static 'img/edit.png' %}>"+   
           "</a>"+
           "</td>" +
@@ -147,10 +147,10 @@
           headers: {
             'X-CSRFTOKEN': '{{ csrf_token }}'
           },
+          dataType: "json",
           data: {
             name
           },
-          dataType: "json",
           success: function (json) {
             //에러메세지가 없을때 (과목정보값이 20글자 미만일때)
             if (json.msg == null) {
@@ -222,12 +222,35 @@
           alert("삭제 성공!");
           reload();
         },
-        error: function (request, status, error, err) {
-          alert("code = " + request.status + msg + " error = " + error + err); // 실패 시 처리
+        error: function ( error ) {
+          alert(" error = " + error); // 실패 시 처리
         },
     });
   }
-  
+
+       
+  function edit_click(clicked_id){
+    let std=clicked_id.split("edit")[1]
+    let name=prompt("Input Category_Title")
+      $.ajax({
+        method : "PUT",
+        url: "/api/category_list/" + std + "/",
+        dataType: "json",
+        headers: {
+            'X-CSRFTOKEN': '{{ csrf_token }}'
+        },
+        data: {
+          name
+        },
+        success : function(json){
+          alert(" 수정 완료 ")
+          reload();
+        },
+        error : function(error){
+          alert(error);
+        }
+      });
+  }
 </script>
 
 {% endblock %}

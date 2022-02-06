@@ -5,7 +5,64 @@
 
 {% endblock %}
 {% block content %}
-<div name="title">
-    <input type="text">
+<script>
+
+    </script>
+<style>
+	div#study{
+		margin:30px 20px;
+	}
+	input#topic{
+        width: 30vw;
+        border-radius: 0.5rem 0.5rem 0.5rem 0.5rem;
+        padding:10px 10px 10px 10px;
+    }#content{
+        width : 90vw;
+        height: 30vw;
+        border-radius: 0.5rem 0.5rem 0.5rem 0.5rem;
+    }
+</style>
+
+ <!-- 임시로 만들었음 조금더 자유도 높은 채팅 구현 -->
+<div id="study">
+	<div>
+		<p>Study Topic</p>
+        <input type="text" id = "topic">
+    </div>
+	<div>
+		<p>Study_Contect</p>
+		<input type="text" id="content">
+		</p>
+	</div>
 </div>
-{% endblock %}
+<div style="text-align: right; margin-right: 8%;">
+    <button type="submit" id="Add_Button" onclick="add()">
+        Add_Study
+    </button>
+</div>
+<script>
+    function add(){
+        var link = document.location.href.split("/")[4];
+        var Study_title = $('#topic').val();
+        var Study_content = $('#content').val();
+        $.ajax({
+            method : "POST",
+            url: "/api/category_list/" + link+ "/study_list/create/",
+            dataType : "json",
+            headers: {
+            'X-CSRFTO': '{{ csrf_token }}'
+            },
+            data : {
+                Study_title,
+                Study_content   
+            },
+            success: function(json){
+                alert("성공");
+            },
+            error:function(request,status,error){
+                alert("code:"+request.status+"\n"+"error:"+error);
+       }
+     });
+    }
+</script>
+{% endblock %} 
