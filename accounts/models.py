@@ -1,9 +1,33 @@
+from random import choice
 from django.db import models
 from django.contrib.auth.models import (
     BaseUserManager, AbstractBaseUser,
     PermissionsMixin)
 
+from reviewer.models import TimeStampedModel
+
+
 # Create your models here.
+
+class PayPlan(TimeStampedModel):
+	class Memberships(models.IntegerChoices):
+		FREE = 0
+		PRIMIUM = 5000
+		MAXIMUN = 19000
+
+	name = models.CharField(max_length=20, default=Memberships.FREE.name, choices=Memberships.choices)
+	price = models.IntegerField(default=Memberships.FREE, choices=Memberships.choices)
+	print(Memberships.labels)
+
+class Organization(TimeStampedModel):
+	class Industries(models.TextChoices):
+		PERSONAL = "personal"
+		RETAIL = "retail"
+		MANUFACTURING = "manufacturing"
+		IT = "it"
+		OTHERS = "others"
+	name = models.CharField(max_length=50) # 회사이름
+	industry = models.CharField(max_length=15, choices=Industries.choices,default=Industries.OTHERS)
 
 class MyUserManager(BaseUserManager):
     def create_user(self, email, nickname, password=None):
@@ -41,7 +65,8 @@ class MyUser(AbstractBaseUser,  PermissionsMixin):
         unique=True,
         default='')
 
-    organization = models.ForeignKey("reviewer.Organization", on_delete=models.DO_NOTHING, null=True)
+    pay_plan = models.ForeignKey(PayPlan, on_delete=models.DO_NOTHING, null=True)
+    organization = models.ForeignKey(Organization, on_delete=models.DO_NOTHING, null=True)
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
     objects = MyUserManager()

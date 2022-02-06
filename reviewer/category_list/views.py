@@ -1,9 +1,7 @@
-import json
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from reviewer.form import CateCreateForm, StudyCreateForm, StudyReviewForm
 from reviewer.models import Categories, Statistic, StudyList
-from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
 from reviewer.utils import dateCalculation

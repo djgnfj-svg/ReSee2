@@ -3,7 +3,7 @@ from typing import Dict
 from django.db import models
 from django.contrib.gis.geoip2 import GeoIP2
 
-from accounts.models import MyUser
+from ReSee.settings import AUTH_USER_MODEL
 from reviewer.models_utils import dict_filter, dict_slice
 
 # Create your models here.
@@ -14,29 +14,14 @@ class TimeStampedModel(models.Model):
 	class Meta:
 		abstract = True
 
-class PayPlan(TimeStampedModel):
-	name = models.CharField(max_length=20)
-	price = models.IntegerField()
-
-class Organization(TimeStampedModel):
-	class Industries(models.TextChoices):
-		PERSONAL = "personal"
-		RETAIL = "retail"
-		MANUFACTURING = "manufacturing"
-		IT = "it"
-		OTHERS = "others"
-	name = models.CharField(max_length=50) # 회사이름
-	industry = models.CharField(max_length=15, choices=Industries.choices,default=Industries.OTHERS)
-	pay_plan = models.ForeignKey(PayPlan, on_delete=models.DO_NOTHING, null=True)
-
 class EmailVerification(TimeStampedModel):
-	user = models.ForeignKey(MyUser, on_delete=models.CASCADE)
+	user = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE)
 	key = models.CharField(max_length=100, null=True)
 	verified = models.BooleanField(default=False)
 
 class Categories(TimeStampedModel):
 	name = models.CharField(max_length=20,null=True)
-	creator = models.ForeignKey(MyUser, on_delete=models.CASCADE)
+	creator = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE)
 	category_count = models.IntegerField(default=0)
 
 	def create_cate(self, request):
@@ -53,7 +38,7 @@ class Categories(TimeStampedModel):
 class StudyList(TimeStampedModel):
 	review_count = models.IntegerField(null=False, default=0)
 	category = models.ForeignKey(Categories, on_delete=models.CASCADE, null=True)
-	creator = models.ForeignKey(MyUser, on_delete=models.CASCADE)    
+	creator = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE)    
 	study_title = models.CharField(max_length=30)
 	study_content = models.TextField()
 

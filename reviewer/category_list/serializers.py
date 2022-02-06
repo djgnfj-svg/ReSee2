@@ -75,10 +75,10 @@ class StudyCreateSerializer(serializers.Serializer):
 		instance.category = Categories.objects.filter(id = request.data.get("category",None)).first()
 		instance.creator_id = request.user.id
 		if commit:
-				try:
-						instance.save()
-				except Exception as e:
-						print(e)
-				else:
-						pass
+			try:
+				instance.save()
+			except Exception as e:
+				print(e)
+			else:
+				pass
 		return instance
