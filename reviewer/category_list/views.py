@@ -18,22 +18,6 @@ def category_view(request):
     return render(request, "cate_list.html")
 
 @login_required
-def category_change_view(request, action, category_id):
-    if request.method == "POST":
-        list_data = Categories.objects.filter(id=category_id)
-        if list_data.exists():
-            # if list_data.first().creator_id != request.user.id:
-            #     msg = "자신이 소유하지 않은 list 입니다리~~"
-            # else:
-                if action == "delete":
-                    list_data.delete()
-                elif action == "update":
-                    form = CateCreateForm(request.POST)
-                    form.update_form(request, category_id)
-                # return JsonResponse(request.POST)
-    return redirect("cate_list")
-
-@login_required
 def study_list_view(request, category_id):
     if request.method == "POST":
         form = StudyCreateForm(request.POST)
@@ -42,6 +26,18 @@ def study_list_view(request, category_id):
             form.save(request, temp.id)
         return JsonResponse(request.POST)
     return render(request, "study_list.html")
+
+@login_required
+def study_create_view(request, category_id):
+    if request.method == "POST":
+        form = StudyCreateForm(request.POST)
+        if form.is_valid():
+            temp = Categories.objects.filter(id=category_id).first()
+            form.save(request, temp.id)
+            return redirect("study_list", category_id)
+        else:
+            form =StudyCreateForm()
+    return render(request, "study_create.html")
 
 @login_required
 def study_change_view(request, category_id, action, study_id):
