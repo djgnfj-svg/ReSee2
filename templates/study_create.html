@@ -43,18 +43,18 @@
 <script>
     function add(){
         var link = document.location.href.split("/")[4];
-        var Study_title = $('#topic').val();
-        var Study_content = $('#content').val();
+        var study_title = $('#topic').val();
+        var study_content = $('#content').val();
         $.ajax({
-            method : "POST",
-            url: "/api/category_list/" + link+ "/study_list/create/",
+            type : "POST",
+            url: "/api/category_list/" + link+ "/study_list/",
             dataType : "json",
             headers: {
-            'X-CSRFTO': '{{ csrf_token }}'
+                'X-CSRFTOKEN': '{{ csrf_token }}'
             },
             data : {
-                Study_title,
-                Study_content   
+                study_title,
+                study_content   
             },
             success: function(json){
                 alert("성공");

@@ -24,7 +24,7 @@ def study_list_view(request, category_id):
         if form.is_valid():
             temp = Categories.objects.filter(id=category_id).first()
             form.save(request, temp.id)
-        return JsonResponse(request.POST)
+        return redirect("study_list", category_id)
     return render(request, "study_list.html")
 
 @login_required
@@ -37,6 +37,7 @@ def study_create_view(request, category_id):
             return redirect("study_list", category_id)
         else:
             form =StudyCreateForm()
+    print("Test")
     return render(request, "study_create.html")
 
 @login_required

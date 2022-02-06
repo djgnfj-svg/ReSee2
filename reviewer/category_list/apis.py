@@ -47,6 +47,9 @@ class UserViewSet(viewsets.ModelViewSet):
 			rtn = serializer.change(request, serializer.data, pk)
 			return Response(CateListSerializer(rtn).data, status=status.HTTP_201_CREATED)
 		#is_valid 하지 않으면
+		# print(serializer)
+		print(request.data)
+		print(request.body)
 		Resee_data = {
 			"status" :500,
 			"msg" : "카테고리 네임을 입력하셔야 합니다."
@@ -145,6 +148,7 @@ class CateStudyViewSet(viewsets.ModelViewSet):
 	def list(self, request, category_id):
 		# GET ALL
 		time.sleep(0.05)
+		print("여기냐?")
 		queryset = self.get_queryset().all().filter(creator_id=request.user.id, category_id = category_id)
 		serializer = StudyListSerializer(queryset, many=True)
 		return Response(serializer.data)
