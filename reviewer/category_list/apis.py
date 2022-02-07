@@ -12,7 +12,9 @@ from rest_framework import status
 from rest_framework.renderers import JSONRenderer
 from rest_framework.decorators import api_view, renderer_classes, action
 
-class UserViewSet(viewsets.ModelViewSet):
+from reviewer.utils import dateCalculation
+
+class CateViewSet(viewsets.ModelViewSet):
 	queryset = Categories.objects.filter().order_by("created_at")
 	serializer_class = CateListSerializer
 	permission_classes = [permissions.IsAuthenticated]
@@ -112,6 +114,7 @@ class CateStudyViewSet(viewsets.ModelViewSet):
 		#Detail Get
 		queryset = self.get_queryset().filter(pk=pk).first()
 		serializer = StudyListSerializer(queryset)
+
 		return Response(serializer.data)
 	def update(self, request, category_id, pk=None):
 		# PUT 메소드
@@ -126,10 +129,6 @@ class CateStudyViewSet(viewsets.ModelViewSet):
 		}
 		return Response(Resee_data)
 
-	def partial_update(self, request, pk=None):
-		# PATCH METHOD
-		pass
-
 	@renderer_classes([JSONRenderer])
 	def destroy(self, request, category_id, pk=None):
 		queryset = self.get_queryset().filter(category_id = category_id, pk=pk, creator_id = request.user.id)
@@ -141,58 +140,30 @@ class CateStudyViewSet(viewsets.ModelViewSet):
 	def list(self, request, category_id):
 		# GET ALL
 		time.sleep(0.05)
+		print(self)
 		queryset = self.get_queryset().all().filter(creator_id=request.user.id, category_id = category_id)
+		print(queryset)
 		serializer = StudyListSerializer(queryset, many=True)
 		return Response(serializer.data)
 
-class StudyViewSet(viewsets.ModelViewSet):
+class CateReViewSet(viewsets.ModelViewSet):
 	queryset = StudyList.objects.filter().order_by("created_at")
 	serializer_class = StudyListSerializer
 	permission_classes = [permissions.IsAuthenticated]
 
-	def create(self, request):
-		# POST METHOD
-		serializer = StudyCreateSerializer(data=request.data)
-		if serializer.is_valid():
-			rtn = serializer.create(request, serializer.data)
-			return Response(StudyListSerializer(rtn).data, status=status.HTTP_201_CREATED)
-		#is_valid 하지 않으면
-		Resee_data = {
-			"status" :500,
-			"msg" : "카테고리 네임을 입력하셔야 합니다."
-		}
-		return Response(Resee_data)
-
-	def retrieve(self, request, pk=None):
+	def retrieve(self, request, category_id, pk=None):
 		#Detail Get
 		queryset = self.get_queryset().filter(pk=pk).first()
 		serializer = StudyListSerializer(queryset)
 		return Response(serializer.data)
-	def update(self, request, pk=None):
-		# PUT 메소드
-		pass
 
-	def partial_update(self, request, pk=None):
-		# PATCH METHOD
-		pass
-
-	@renderer_classes([JSONRenderer])
-	def destroy(self, request, pk=None):
-		queryset = self.get_queryset().filter(pk=pk, creator_id = request.user.id)
-		if not queryset.exists():
-			raise Http404
-		queryset.delete()
-		return Response({"msg": "ok"})
-
-	def list(self, request):
+	def list(self, request, category_id):
 		# GET ALL
 		time.sleep(0.05)
-		queryset = self.get_queryset().all().filter(creator_id=request.user.id )
-		serializer = StudyListSerializer(queryset, many=True)
-		return Response(serializer.data)
-
-	@action(detail=False, list=True, methods=["get"])
-	def study_list(self, request, pk=None):
-		queryset = self.get_queryset().all().filter(creator_id=request.user.id, category_id = pk)
-		serializer = StudyListSerializer(queryset, many=True)
+		base_time = StudyList.objects.filter(
+			category_id=category_id, creator_id = request.user.id).order_by(
+				"-created_at").first().created_at
+		print("base_time = ", base_time)
+		review_list = dateCalculation(base_time, StudyList.objects.filter(category_id = category_id))
+		serializer = StudyListSerializer(review_list, many=True)
 		return Response(serializer.data)

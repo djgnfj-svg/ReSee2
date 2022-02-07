@@ -6,9 +6,9 @@ from rest_framework import routers
 from reviewer.category_list.apis import *
 
 router = routers.DefaultRouter()
-router.register(r'category_list', UserViewSet)
-router.register(r'category_list/(?P<category_id>\d+)/study_list', CateStudyViewSet)
-router.register(r'study_list', StudyViewSet)
+router.register(r'category_list', CateViewSet)
+router.register(r'category_list/(?P<category_id>\d+)/study_list', CateStudyViewSet, basename="api_study")
+router.register(r'category_list/(?P<category_id>\d+)/review', CateReViewSet, basename="api_review")
 
 
 # category_list/~
@@ -19,6 +19,6 @@ urlpatterns = [
     path("<int:category_id>/study_list/change/",study_change_view,name="study_change"),
     path("<int:category_id>/study_list/<int:study_id>",
         study_review_view,name="study_review"),
-    path("<int:category_id>/study_list/<str:action>/<int:study_id>",
+    path("<int:category_id>/review",
         study_change_view,name="study_change"),
 ]
