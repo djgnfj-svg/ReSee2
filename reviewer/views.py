@@ -14,7 +14,6 @@ def payplan_view(request):
 	if request.method == "POST":
 		form = PayPlanForm(request.POST)
 		if form.is_valid():
-			print(request.user.id)
 			form.save(request, request.user.id)
-			redirect("home")
+			return redirect("home")
 	return render(request,"payplan.html")

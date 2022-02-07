@@ -1,7 +1,7 @@
 from pyexpat import model
 from django import forms
 from django.utils.translation import gettext_lazy as _
-from accounts.models import PayPlan
+from accounts.models import MyUser, PayPlan
 
 from reviewer.models import Categories, StudyList
 
@@ -70,7 +70,7 @@ class PayPlanForm(forms.ModelForm):
             if v[1] == instance.name:
                 instance.price = v[0]
                 break
-        instance.subscribers = User
+        instance.subscribers = MyUser.objects.filter(id=User).first()
         if commit:
             instance.save()
         return instance
