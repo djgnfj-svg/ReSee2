@@ -36,3 +36,7 @@ back
 1. account 로그인 실패 사유들 함수로 처리하기(form) <- json으로 보넴
 10. 회원가입 이후에 자동으로 로그인 되기
 front
+
+PayPlan이 none나 free 1개
+PayPlan이 primium 3개
+PayPlan이 maximum나 5개
