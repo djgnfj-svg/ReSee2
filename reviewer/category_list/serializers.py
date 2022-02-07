@@ -41,14 +41,14 @@ class CateCreateSerializer(serializers.Serializer):
 		instance = Categories()
 		instance.name = data.get("name", None)
 		instance.creator_id = request.user.id
-		temp_count = Categories.objects.filter(creator_id = request.user.id).last()
+		temp_count = Categories.objects.filter(creator_id = request.user.id).count()
 		if temp_count == None:
 			instance.category_count = 1
 		else:
-			if category_guard(temp_count.category_count, request.user.id):
+			if category_guard(temp_count, request.user.id):
 				return False
 			else:
-				instance.category_count = temp_count.category_count +1
+				instance.category_count = temp_count +1
 		if commit:
 			try:
 				instance.save()
