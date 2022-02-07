@@ -24,12 +24,6 @@ class Categories(TimeStampedModel):
 	creator = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE)
 	category_count = models.IntegerField(default=0)
 
-	def create_cate(self, request):
-		self.category_count += 1
-		self.creator_id = request.user.id
-		self.name = "temp category" + self.category_count
-		self.save()
-
 	def cate_count_up(self):
 		self.category_count += 1
 		self.save()

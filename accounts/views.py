@@ -17,7 +17,6 @@ def login_view(request):
         login_form = LoginForm(request.POST)
         res_data = {}
         if not login_form.is_valid():
-            print(login_form.errors.as_json())
             return JsonResponse(login_form.errors.as_json(), safe=False)
         try :
             user = MyUser.objects.get(email=login_form.cleaned_data.get("email"))

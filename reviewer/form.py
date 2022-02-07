@@ -1,5 +1,7 @@
+from pyexpat import model
 from django import forms
 from django.utils.translation import gettext_lazy as _
+from accounts.models import PayPlan
 
 from reviewer.models import Categories, StudyList
 
@@ -28,18 +30,6 @@ class StudyCreateForm(forms.ModelForm):
             "study_title",
             "study_content",
         ]
-        widgets ={
-            "study_title":forms.Textarea(attrs={
-                "class" : "form-control",
-                "placeholder" : "학습 주제를 입력하세요! ex.. 접두사",
-                "style" : "height : 30px"
-                }),
-        "study_content":forms.Textarea(attrs={
-            "class": "new-class-name two",
-                "placeholder" : "학습 내용을 입력하세요",
-                "style" : "height : 500px; width : 90.75rem; outline:none; border:none; overflow: auto;"
-                }),
-        }
     def save(self, request, category_id, commit=True):
         instance = super(StudyCreateForm, self).save(commit=False)
         instance.creator_id = request.user.id
@@ -65,14 +55,23 @@ class StudyReviewForm(forms.ModelForm):
             "study_title",
             "study_content",
         ]
-        widgets ={
-            "study_title":forms.TextInput(attrs={"class" : "form-control",
-             "disabled" : True,
-             "style" : "width : 150px;"
 
-             }),
-            "study_content":forms.Textarea(attrs={"class" : "form-control",
-             "disabled" : True,
-            "style" : "height : 570px; width : 1440px; overflow : auto;",
-             }),
-        }
+
+class PayPlanForm(forms.ModelForm):
+    class Meta:
+        model = PayPlan
+        fields = [
+            "name",
+        ]
+    def save(self, request, User, commit=True):
+        instance = super(PayPlanForm, self).save(commit=False)
+        instance.name = instance.name.strip()
+        for v in PayPlan.Memberships.choices:
+            if v[1] == instance.name:
+                instance.price = v[0]
+                break
+        instance.subscribers = User
+        if commit:
+            instance.save()
+        return instance
+

@@ -1,10 +1,11 @@
+from unicodedata import name
 from attr import field
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.hashers import make_password
 
 from django import forms
 
-from accounts.models import MyUser
+from accounts.models import MyUser, PayPlan
 
 class LoginForm(forms.Form):
 	class Meta:

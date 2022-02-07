@@ -34,9 +34,7 @@ def study_change_view(request, category_id, action, study_id):
     if request.method == "POST":
         list_data = StudyList.objects.filter(id=study_id)
         if list_data.exists():
-            if action == "delete":
-                list_data.delete()
-            elif action == "update":
+            if action == "update":
                 form = StudyCreateForm(request.POST)
                 if form.is_valid():
                     form.update_form(request, study_id)
@@ -45,6 +43,7 @@ def study_change_view(request, category_id, action, study_id):
 
 def study_review_view(request, category_id, study_id):
     try:
+        # todo 나중에 리뷰 스택이 최고치가 아닌것까지 필터에 넣어야됨
         base_time = StudyList.objects.filter(category_id=category_id).order_by("-created_at").first().created_at
     except:
         return redirect("cate_list")
@@ -57,7 +56,6 @@ def study_review_view(request, category_id, study_id):
         category = Categories.objects.filter(id=category_id)
         study = StudyList.objects.filter(id=category_id)
         custom_params = request.GET.dict() if request.GET.dict() else None
-
         history = Statistic()
         history.record(request, category, study, custom_params)
         return redirect("cate_list")
@@ -66,5 +64,4 @@ def study_review_view(request, category_id, study_id):
     except IndexError:
         return redirect("cate_list")
     else:
-        return render(request, "study_review.html", {"form" : form, "category_id" : category_id,
-        "study_id" : study_id})
+        return render(request, "study_review.html")
