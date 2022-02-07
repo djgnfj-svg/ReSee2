@@ -113,9 +113,18 @@ class CateStudyViewSet(viewsets.ModelViewSet):
 		queryset = self.get_queryset().filter(pk=pk).first()
 		serializer = StudyListSerializer(queryset)
 		return Response(serializer.data)
-	def update(self, request, pk=None):
+	def update(self, request, category_id, pk=None):
 		# PUT 메소드
-		pass
+		serializer = StudyCreateSerializer(data=request.data)
+		if serializer.is_valid():
+			rtn = serializer.change(request, serializer.data, category_id, pk)
+			return Response(StudyListSerializer(rtn).data, status=status.HTTP_201_CREATED)
+		#is_valid 하지 않으면
+		Resee_data = {
+			"status" :500,
+			"msg" : "카테고리 네임을 입력하셔야 합니다."
+		}
+		return Response(Resee_data)
 
 	def partial_update(self, request, pk=None):
 		# PATCH METHOD

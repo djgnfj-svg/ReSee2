@@ -42,7 +42,6 @@ class CateCreateSerializer(serializers.Serializer):
 		instance.name = data.get("name", None)
 		instance.creator_id = request.user.id
 		temp_count = Categories.objects.filter(creator_id = request.user.id).last()
-		print(temp_count)
 		if temp_count == None:
 			instance.category_count = 1
 		else:
@@ -91,3 +90,17 @@ class StudyCreateSerializer(serializers.Serializer):
 			else:
 				pass
 		return instance
+
+	def change(self, request, data, category_id, pk, commit=True):
+		instance = StudyList.objects.filter(pk=pk, category_id = category_id).first()
+		instance.study_title = data.get("study_title", None)
+		instance.study_content = data.get("study_content", None)
+		instance.review_count = data.get("review_count")
+		if commit:
+			try:
+				instance.save()
+			except Exception as e:
+				print(e)
+			else:
+				pass
+		return instance	
