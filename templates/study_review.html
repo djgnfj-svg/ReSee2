@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}로그인 / 회원가입 폼 템플릿{% endblock %}
+{% block head %}
+
+{% endblock %}
+{% block content %}
+<style>
+    #topic_title{
+        margin-left: 20px;
+        font-size: 20px;
+        font-family: sans-serif;
+        font-weight: bold;
+        padding:10px 10px 10px 10px;
+    }#content_title{
+        margin-left: 20px;
+        font-size: 20px;
+        font-family: sans-serif;
+        font-weight: bold;
+        
+    }
+    #topic{
+        border: 1px solid black;
+        width: 30vw;
+        border-radius: 0.5rem 0.5rem 0.5rem 0.5rem;
+        padding:10px 10px 10px 10px;
+        margin-left: 20px;
+    }
+    #content{
+        border: 1px solid black;
+        width : 90vw;
+        height: 30vw;
+        border-radius: 0.5rem 0.5rem 0.5rem 0.5rem;
+        border-radius: 0.5rem 0.5rem 0.5rem 0.5rem;
+        padding:10px 10px 10px 10px;
+        margin-left: 20px;
+    }
+</style>
+<script>
+    var link = document.location.href.split("/")[4];
+    var study_link=document.location.href.split("/")[6];
+    $.ajax({
+        method:"GET",
+        url : "/api/category_list/"+link+"/study_list/"+study_link+"/",
+        dataType:'json',
+        success:function(json){
+            $("#topic").append(json.study_title);
+            $("#content").append(json.study_content)
+        },
+        error:function(error){
+            alert(error);
+        }
+    })
+</script>
+
+</head>
+    <div>
+        <div id="study">
+            <div>
+                <p id="topic_title">Study Topic</p>
+                <div id="topic">
+    
+                </div>
+            </div>
+            <div>
+                <p id="content_title">Study_Content</p>
+                </p>
+                <div id="content">
+                </div>
+        </div>
+<script>
+    
+</script>
+
+{% endblock %}

@@ -9,7 +9,7 @@
   var link = document.location.href.split("/")[4];
   $.ajax({
     type: "GET",
-    url: "/api/category_list/" + link + "/study_list/",
+    url: "/api/category_list/" + link + "/study_list",
     dataType: 'json',
     success: function (json) {
       for (i = 0; i < json.length; i++) {
@@ -18,7 +18,7 @@
           "<th scope='row'>" + json[i].id + "</th>" +
           "<td>" +
           "<li class='menu'>" +
-          "<a>" + json[i].study_title + "</a>" +
+          "<a href='/category_list/" + link + "/study_list/"+json[i].id+"'>" + json[i].study_title + "</a>" +
           "</li>" +
           "</td>" +
           "<td>" + json[i].updated_at + "</td>" +
@@ -28,6 +28,9 @@
           "color: white; border: 1px solid; border-radius: 0.5rem 0.5rem 0.5rem 0.5rem;'>" +
           "내용보기" +
           "</button>" +
+          "<a id='clear"+json[i].id+"' href='#'  onclick='reply_click(this.id)'>"+
+          "<img src= {% static 'img/clear.png' %}>"+  
+          "</a>"+
           "</a>" +
           "</td>" +
           "</tr>"
@@ -56,7 +59,6 @@
     float: left;
   }
 </style>
-
 <header style="font-weight: bold; font-size: 30px; margin-top: 1%; margin-left: 3%; margin-bottom: 1%;">
   Study_list
 </header>
@@ -76,15 +78,39 @@
     <tbody id=study_board>
 
 
-
     </tbody>
   </table>
 
 </div>
 <script>
+  var link = document.location.href.split("/")[4];
+  let str=clicked_id.split("clear")[1]
+
   function create_study(){
-    var link = document.location.href.split("/")[4];
     location.href="/category_list/" + link + "/study_list/create"
   }
+
+  function reload(){
+    window.location.reload()
+  }
+
+  function reply_click(clicked_id) {
+      $.ajax({
+        method: "DELETE",
+        url: "/api/category_list/" + link + "/study_list/"+str+"/",
+        dataType: "json",
+        headers: {
+          'X-CSRFTOKEN': '{{ csrf_token }}'
+        },
+        success: function (json) {
+          alert("삭제 성공!");
+          reload();
+        },
+        error: function ( error ) {
+          alert(" error = " + error); // 실패 시 처리
+        },
+    });
+  }
+  
 </script>
 {% endblock %}
