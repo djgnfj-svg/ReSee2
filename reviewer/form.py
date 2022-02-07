@@ -2,6 +2,7 @@ from pyexpat import model
 from django import forms
 from django.utils.translation import gettext_lazy as _
 from accounts.models import MyUser, PayPlan
+from reviewer.form_utils import category_guard
 
 from reviewer.models import Categories, StudyList
 
@@ -14,6 +15,10 @@ class CateCreateForm(forms.ModelForm):
         instance = super(CateCreateForm, self).save(commit=False)
         instance.creator_id = request.user.id
         instance.name = instance.name.strip()
+        if category_guard(instance.category_count, request.user.id):
+            return False
+        else:
+            instance.category_count = (instance.category_count + 1)
         if commit:
             instance.save()
         return instance
@@ -75,3 +80,13 @@ class PayPlanForm(forms.ModelForm):
             instance.save()
         return instance
 
+    def update_form(self, request, User, commit=True):
+        instance = super(PayPlanForm, self).save(commit=False)
+        instance.name = instance.name.strip()
+        for v in PayPlan.Memberships.choices:
+            if v[1] == instance.name:
+                instance.price = v[0]
+                break
+        if commit:
+            PayPlan.objects.filter(subscribers_id = request.user.id).update(name=instance.name, price=instance.price)
+        return instance

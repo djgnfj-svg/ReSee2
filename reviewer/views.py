@@ -14,6 +14,9 @@ def payplan_view(request):
 	if request.method == "POST":
 		form = PayPlanForm(request.POST)
 		if form.is_valid():
-			form.save(request, request.user.id)
+			if PayPlan.objects.filter(subscribers_id = request.user.id).first():
+				form.update_form(request, request.user.id)
+			else:
+				form.save(request, request.user.id)
 			return redirect("home")
 	return render(request,"payplan.html")

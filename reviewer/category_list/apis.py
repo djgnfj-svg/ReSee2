@@ -22,12 +22,17 @@ class UserViewSet(viewsets.ModelViewSet):
 		serializer = CateCreateSerializer(data=request.data)
 		if serializer.is_valid():
 			rtn = serializer.create(request, serializer.data)
-			return Response(CateListSerializer(rtn).data, status=status.HTTP_201_CREATED)
+			if rtn:
+				return Response(CateListSerializer(rtn).data, status=status.HTTP_201_CREATED)
+			else:
+				error_msg = "maximun category_count"
 		#is_valid 하지 않으면
 		# 카테고리 제목값이 너무 길엉
+		else:
+			error_msg = serializer.errors["name"]
 		Resee_data = {
 			"status" :400,
-			"msg" : serializer.errors["name"]
+			"msg" : error_msg
 		}
 
 		return Response(Resee_data)
@@ -117,8 +122,8 @@ class CateStudyViewSet(viewsets.ModelViewSet):
 		pass
 
 	@renderer_classes([JSONRenderer])
-	def destroy(self, request, pk=None):
-		queryset = self.get_queryset().filter(pk=pk, creator_id = request.user.id)
+	def destroy(self, request, category_id, pk=None):
+		queryset = self.get_queryset().filter(category_id = category_id, pk=pk, creator_id = request.user.id)
 		if not queryset.exists():
 			raise Http404
 		queryset.delete()

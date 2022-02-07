@@ -11,8 +11,14 @@ def category_view(request):
     if request.method == "POST":
         cate_list = CateCreateForm(request.POST)
         if cate_list.is_valid():
-            cate_list.save(request)
-            return JsonResponse(request.POST)
+            if cate_list.save(request):
+                return JsonResponse(request.POST)
+            else:
+                res_data = {
+                    # 나중에 좀더 자세히 보네야되겠다.
+                    "error" : "please subscribe ReSee"
+                }
+                return JsonResponse(res_data)
     return render(request, "cate_list.html")
 
 @login_required
@@ -41,6 +47,7 @@ def study_change_view(request, category_id, action, study_id):
             return JsonResponse(request.POST)
     return redirect("study_list", category_id)
 
+@login_required
 def study_review_view(request, category_id, study_id):
     # try:
     #     # todo 나중에 리뷰 스택이 최고치가 아닌것까지 필터에 넣어야됨
