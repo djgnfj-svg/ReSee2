@@ -20,7 +20,7 @@ class EmailVerification(TimeStampedModel):
 	verified = models.BooleanField(default=False)
 
 class Categories(TimeStampedModel):
-	name = models.CharField(max_length=20,null=True)
+	name = models.CharField(max_length=20)
 	creator = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE)
 	category_count = models.IntegerField(default=0)
 
@@ -31,7 +31,7 @@ class Categories(TimeStampedModel):
 
 class StudyList(TimeStampedModel):
 	review_count = models.IntegerField(null=False, default=0)
-	category = models.ForeignKey(Categories, on_delete=models.CASCADE, null=True)
+	category = models.ForeignKey(Categories, on_delete=models.CASCADE, default=1)
 	creator = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE)    
 	study_title = models.CharField(max_length=30)
 	study_content = models.TextField()
@@ -85,4 +85,13 @@ class TrackingParams(TimeStampedModel):
 
 	@classmethod
 	def get_tracking_params(cls, category_id):
-			return cls.objects.filter(category_id=category_id).values_list("params", flat=True)
+		return cls.objects.filter(category_id=category_id).values_list("params", flat=True)
+
+
+class BackOfficeLogs(TimeStampedModel):
+	endpoint = models.CharField(max_length=2000, blank=True, null=True)
+	body = models.JSONField(null=True)
+	method = models.CharField(max_length=20, blank=True, null=True)
+	user_id = models.IntegerField(blank=True, null=True)
+	ip = models.CharField(max_length=30, blank=True, null=True)
+	status_code = models.IntegerField(blank=True, null=True)

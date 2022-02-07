@@ -40,12 +40,12 @@ class CateCreateSerializer(serializers.Serializer):
 	def create(self, request, data, commit=True):
 		instance = Categories()
 		instance.name = data.get("name", None)
-		instance.creator_id = request.user.id
-		temp_count = Categories.objects.filter(creator_id = request.user.id).count()
+		instance.creator_id = request.users_id
+		temp_count = Categories.objects.filter(creator_id = request.users_id).count()
 		if temp_count == None:
 			instance.category_count = 1
 		else:
-			if category_guard(temp_count, request.user.id):
+			if category_guard(temp_count, request.users_id):
 				return False
 			else:
 				instance.category_count = temp_count +1

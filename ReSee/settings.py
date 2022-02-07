@@ -72,6 +72,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     "django_user_agents.middleware.UserAgentMiddleware",
+    "reviewer.middleware.ShrinkersMiddleware",
 ]
 
 GEOIP_PATH = os.path.join(BASE_DIR, "geolite2")
