@@ -3,135 +3,105 @@
 {% block title %}PayPlan{% endblock %}
 {% block content %}
 
+<script>
+    function free() {
+        $.ajax({
+            method: "POST",
+            url: "/payplan"
+        })
+    }
 
+
+</script>
+
+<form id="payplan" action="" class="input-group-adon" method="post"></form>
     <div class="container body-content">
-
-
-
-<div class="container">
-
-
-                    <div class="row justify-content-start" style="padding-top:10px;">
-
+    
+        <div class="container">
+    
+            <div class="row justify-content-start" style="padding-top:10px;">
+    
                 <div class="col" style="padding-top:10px;">
-<input class="form-control"></input>
-
-
-                </div>
-                <div class="col" style="padding-top:10px;">
-<button class="btn btn-primary">SEARCH</button>
-
-
-                </div>
-                </div>
-                <div class="row justify-content-start" style="padding-top:10px;">
-
-                <div class="col" style="padding-top:10px;">
-
-
-<img alt="Image html" width="90%" height="90%" style="max-height:500px;max-width:500px;" src="https://sketch2code.azurewebsites.net/Content/img/fake_img.svg" />
-
-
+    
+    
+                    <img alt="Image html" width="90%" height="90%" style="max-height:500px;max-width:500px;"
+                        src="{% static 'img\free.png' %}" />
+    
                 </div>
                 <div class="col" style="padding-top:10px;">
-
-
-<img alt="Image html" width="90%" height="90%" style="max-height:500px;max-width:500px;" src="https://sketch2code.azurewebsites.net/Content/img/fake_img.svg" />
-
-
+    
+                    <img alt="Image html" width="90%" height="90%" style="max-height:500px;max-width:500px;"
+                        src="https://upload3.inven.co.kr/upload/2021/09/04/bbs/i16457772723.png" />
+    
                 </div>
                 <div class="col" style="padding-top:10px;">
-
-
-<img alt="Image html" width="90%" height="90%" style="max-height:500px;max-width:500px;" src="https://sketch2code.azurewebsites.net/Content/img/fake_img.svg" />
-
-
+    
+                    <img alt="Image html" width="90%" height="90%" style="max-height:500px;max-width:500px;"
+                        src="https://dimg.donga.com/wps/NEWS/IMAGE/2020/08/18/102540363.1.jpg" />
+    
                 </div>
-                </div>
-                <div class="row justify-content-start" style="padding-top:10px;">
-
+            </div>
+            <div class="row justify-content-start" style="padding-top:10px;">
+    
                 <div class="col" style="padding-top:10px;">
-<label>PRODUCT 1</label>
-
-
-
+                    <label>Free</label>
+    
                 </div>
                 <div class="col" style="padding-top:10px;">
-<label>PRODUCT 2</label>
-
-
-
+                    <label>Primium</label>
+    
                 </div>
                 <div class="col" style="padding-top:10px;">
-<label>PRODUCT 3</label>
-
-
-
+                    <label>Maximum</label>
+    
                 </div>
-                </div>
-                <div class="row justify-content-start" style="padding-top:10px;">
-
+            </div>
+            <div class="row justify-content-start" style="padding-top:10px;">
+    
                 <div class="col" style="padding-top:10px;">
-<p class="text-black-50">
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit
-    <br />
-    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-    <br />
-    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-</p>
+                    <p class="text-black-50">
+                        무료가.. 말대꾸?
+                    </p>
                 </div>
                 <div class="col" style="padding-top:10px;">
-<label></label>
-
-
-
-                </div>
-                </div>
-                <div class="row justify-content-start" style="padding-top:10px;">
-
-                <div class="col" style="padding-top:10px;">
-<label>$ 20.15</label>
-
-
-
+                    어서오십시오. 고갱님
                 </div>
                 <div class="col" style="padding-top:10px;">
-<label>$ 19.50</label>
-
-
-
+                    Wellcome To ReSee !
+                    <br />
+                    Have a Nice Day
+                </div>
+            </div>
+            <div class="row justify-content-start" style="padding-top:10px;">
+    
+                <div class="col" style="padding-top:10px;">
+                    <label>$ No hair</label>
+    
                 </div>
                 <div class="col" style="padding-top:10px;">
-<label>$ 35.80</label>
-
-
-
-                </div>
-                </div>
-                <div class="row justify-content-start" style="padding-top:10px;">
-
-                <div class="col" style="padding-top:10px;">
-<button class="btn btn-primary">ADD TO CART</button>
-
-
+                    <label>$ 9.99</label>
+    
                 </div>
                 <div class="col" style="padding-top:10px;">
-<button class="btn btn-primary">ADD TO CART</button>
-
-
+                    <label>$ 19.99</label>
+    
+                </div>
+            </div>
+            <div class="row justify-content-start" style="padding-top:10px;">
+    
+                <div class="col" style="padding-top:10px;">
+                    <button class="btn btn-primary" type="submit" id="free" onclick="free()"> Get Out here</button>
                 </div>
                 <div class="col" style="padding-top:10px;">
-<button class="btn btn-primary">ADD TO CART</button>
-
-
+                    <button class="btn btn-primary" type="submit" id="primium" onclick="primium()">구매하기</button>
                 </div>
+                <div class="col" style="padding-top:10px;">
+                    <button class="btn btn-primary" type="submit" id="maximum" onclick="maximum()">구매하기</button>
                 </div>
-
-
-</div>
-
-
+            </div>
+    
+        </div>
 
     </div>
-
+</form>
 {% endblock %}
