@@ -36,16 +36,8 @@ def study_create_view(request, category_id):
     return render(request, "study_create.html")
 
 @login_required
-def study_change_view(request, category_id, action, study_id):
-    if request.method == "POST":
-        list_data = StudyList.objects.filter(id=study_id)
-        if list_data.exists():
-            if action == "update":
-                form = StudyCreateForm(request.POST)
-                if form.is_valid():
-                    form.update_form(request, study_id)
-            return JsonResponse(request.POST)
-    return redirect("study_list", category_id)
+def study_change_view(request, category_id):
+    return redirect("study_change.html", category_id)
 
 @login_required
 def study_review_view(request, category_id, study_id):
