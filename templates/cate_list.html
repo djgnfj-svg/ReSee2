@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}로그인 / 회원가입 폼 템플릿{% endblock %}
+{% block title %}복습하기{% endblock %}
 {% block head %}
 <meta name="_csrf" th:content="${_csrf.token}">
 <meta name="_csrf_header" th:content="${_csrf.headerName}">
@@ -8,14 +8,8 @@
 {% endblock %}
 {% block content %}
 
-<!-- <form type="POST">
-  <a class= 'temp' href='/category_list/"+json[i].id+"/study_list'>
-    json[i].name
-    </a>
-</form> -->
 
 <script>
-
   //카테고리 리스트 GET으로 가져오기
   $.ajax({
     type: "GET",
@@ -25,7 +19,6 @@
       for (var i = 0; i < json.length; i++) {
         $("#cate_board").append(" " +
           "<tr>" +
-          "<th id='number'  scope='row'>" + json[i].id + "</th>" +
           "<td>" +
           "<li class='menu'>" +
           "<a href='/category_list/"+json[i].id+"/study_list' id='name"+json[i].id+"'>"+
@@ -36,7 +29,6 @@
           "<img src= {% static 'img/edit.png' %}>"+   
           "</a>"+
           "</td>" +
-          "<td> <li>" + json[i].category_count + "</li></td>" +
           "<td><li>" + json[i].created_at + "</li></td>" +
           "<td>" +
           "<a>" +
@@ -58,6 +50,10 @@
   </script>
 
 <style>
+  
+  body{
+    background-color: rgb(233, 233, 233);
+  }
   .menu a {
     cursor: pointer;
   }
@@ -72,13 +68,23 @@
     float: left;
   }
   img{
-    background-color: white;
+    background-color:rgb(233, 233, 233);
     border: none;
     margin-left: 7%;
   }
   li {
     list-style: none;
     float: left;
+  }
+  #Add{
+    background-color: rgb(0, 0, 0);
+    color:white;
+    width: 100px;
+    height: 30px;
+    margin-right: 15%;
+    border:solid 1px rgb(0, 0, 0);
+    border-radius: 0.5rem .5rem .5rem .5rem;
+    text-shadow:-1px 0 #000000, 0 1px #000000, 1px 0 #000000, 0 -1px #000000;
   }
 
   button#start {
@@ -91,32 +97,26 @@
   }
 </style>
 
+
 <header>
-  <div style="margin-left: 10%;">
-    <a style="font-size: 20px; font-weight: bold;">
+  <div style="margin-left: 15%; margin-top: 1%;">
+    <a style="font-size: 20px; font-weight: bold; color: rgb(42, 41, 41);">
       Category_List
     </a>
     </div>
     <div style="text-align: right;">
-      <button type="submit" class="Add_Cate" id="Add"
-        style="background-color: white; color:black; width: 100px; height: 30px; border-radius: 1rem 1rem 1rem 1rem;">
+      <button type="submit" class="Add_Cate" id="Add" >
         Add
       </button>
   </div>
   </div>
 </header>
 
-
-</div>
-<div style="margin-left: 15vw; margin-right: 15vw;">
-  <table class="table align-items-center table-flush">
-    <thead class="thead-light">
+  <div style="margin-left: 15vw; margin-right: 15vw;">
+    <table class="table align-items-center table-flush">
+      <thead class="thead-light">
       <tr>
-        <th scope="col">No.</th>
         <th scope="col">Title</th>
-        <th scope="col">
-          ReSee_Number
-        </th>
         <th scope="col">Last_ReSee</th>
         <th scope="col">Action</th>
       </tr>
@@ -161,40 +161,38 @@
                 dataType: 'json',
                 success: function (json) {
                   $("#cate_board").append(" " +
-                    "<tr>" +
-                    "<th scope='row'>" + json[json.length - 1].id + "</th>" +
-                    "<td>" +
-                    "<li class='menu'>" +
-                    "<a href='/category_list/" + json[json.length - 1].id + "/study_list'>" +
-                    json[json.length - 1].name +
-                    "</a>" +
-                    "</li>" +
-                    "<a>" +
-                    "<img src= {% static 'img/edit.png' %}>" +
-                    "</a>" +
-                    "</td>" +
-                    "<td> <li>" + json[json.length - 1].category_count + "</li></td>" +
-                    "<td><li>" + json[json.length - 1].created_at + "</li></td>" +
-                    "<td>" +
-                    "<a>" +
-                    "<button type='submit' id='start' >" +
-                    "시작" +
-                    "</button>" +
-                    "<a id='clear"+json[json.length -1].id+"' href='#'  onclick='reply_click(this.id)'>" +
-                    "<img src= {% static 'img/clear.png' %}>" +
-                    "</a>" +
-                    "</td>" +
-                    "</tr>)");
-                },
-                error: function (err) {
-                  console.log(err); //오류발생시 콘솔 로그 출력
-                },
-              });
-              //20글자 이상일때는 에러메시지를 보여준다
-            } else if (json.msg != null) {
-              alert(json.msg);
-            }
-          },
+                  "<tr>"+
+                    "<td>"+
+                      "<li class='menu'>" +
+                        "<a href='/category_list/" + json[json.length - 1].id + "/study_list'>" +
+                          json[json.length - 1].name +
+                          "</a>" +
+                          "</li>" +
+                          "<a>" +
+                            "<img src= {% static 'img/edit.png' %}'>" +
+                            "</a>" +
+                            "</td>" +
+                            "<td><li>" + json[json.length - 1].created_at + "</li></td>" +
+                            "<td>" +
+                              "<a>" +
+                                "<button type='submit' id='start' >" +
+                                  "시작" +
+                                  "</button>" +
+                                  "<a id='clear"+json[json.length -1].id+"' href='#'  onclick='reply_click(this.id)'>" +
+                                    "<img src= {% static 'img/clear.png' %}>" +
+                                    "</a>" +
+                                    "</td>" +
+                                    "</tr>)");
+                                  },
+                                  error: function (err) {
+                                    console.log(err); //오류발생시 콘솔 로그 출력
+                                  },
+                                });
+                                //20글자 이상일때는 에러메시지를 보여준다
+                              } else if (json.msg != null) {
+                                alert(json.msg);
+                              }
+                            },
           //Post 실패시 에러
           error: function (request, status, error) {
             alert("code:" + request.status + "\n" + "error:" + error);
@@ -210,33 +208,33 @@
   
   function reply_click(clicked_id) {
     let str=clicked_id.split("clear")[1]
-      $.ajax({
-        method: "DELETE",
-        url: "/api/category_list/" + str + "/",
-        dataType: "json",
-        headers: {
-          'X-CSRFTOKEN': '{{ csrf_token }}'
-        },
-        success: function (json) {
-          alert("삭제 성공!");
+    $.ajax({
+      method: "DELETE",
+      url: "/api/category_list/" + str + "/",
+      dataType: "json",
+      headers: {
+        'X-CSRFTOKEN': '{{ csrf_token }}'
+      },
+      success: function (json) {
+        alert("삭제 성공!");
           reload();
         },
         error: function ( error ) {
           alert(" error = " + error); // 실패 시 처리
         },
-    });
-  }
-
-       
-  function edit_click(clicked_id){
-    let std=clicked_id.split("edit")[1]
-    let name=prompt("Input Category_Title")
+      });
+    }
+    
+    
+    function edit_click(clicked_id){
+      let std=clicked_id.split("edit")[1]
+      let name=prompt("Input Category_Title")
       $.ajax({
         method : "PUT",
         url: "/api/category_list/" + std + "/",
         dataType: "json",
         headers: {
-            'X-CSRFTOKEN': '{{ csrf_token }}'
+          'X-CSRFTOKEN': '{{ csrf_token }}'
         },
         data: {
           name
@@ -249,7 +247,7 @@
           alert(error);
         }
       });
-  }
-</script>
+    }
+  </script>
 
 {% endblock %}

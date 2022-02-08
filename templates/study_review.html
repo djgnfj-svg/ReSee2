@@ -38,19 +38,26 @@
 </style>
 <script>
     var link = document.location.href.split("/")[4];
-    var study_link=document.location.href.split("/")[6];
+    
     $.ajax({
         method:"GET",
-        url : "/api/category_list/"+link+"/study_list/"+study_link+"/",
+        url : "/api/category_list/"+link+"/study_list/2/",
+
         dataType:'json',
+        
         success:function(json){
             $("#topic").append(json.study_title);
             $("#content").append(json.study_content)
+            $("#button").append(" "+
+                "<button type='submit' onclick='prev()'>Prev</button>"+
+                "<button type='submit' onclick='next()'>Next</button>"
+            )
         },
         error:function(error){
             alert(error);
         }
     })
+    
 </script>
 
 </head>
@@ -68,8 +75,65 @@
                 <div id="content">
                 </div>
         </div>
+        <div id="button">
+            
+        </div>
 <script>
+    //겟으로 마지막카테고리를 가져온다?
+    var link = document.location.href.split("/")[4];
+    let start=0;//첫번째 id값
+    let last=0;//마지막 id값
+    let first=0;
+    $.ajax({
+        method:"GET",
+        url : "/api/category_list/"+link+"/study_list/",
+        dataType:'json',
+        success:function(json){
+            start = json[0].id;
+            first = json[0].id;
+            for(let i=0; i<json.length; i++){
+                last = json[i].id;
+            }
+        }
+    });
     
+    function prev() {
+        if (start <= first) {
+            alert("첫번째 인덱스임")
+            } else {
+                start--;
+                $.ajax({
+                    type: "GET",
+                    url: "/api/category_list/" + link + "/study_list/"+start+"/",
+                    dataType: 'json',
+                    success: function (json) {
+                        $("#topic").empty();
+                        $("#topic").append(json.study_title);
+                        $("#content").empty();
+                        $("#content").append(json.study_content)
+                    }
+                })
+            }
+        }
+    function next(){
+        //마지막 인덱스 값일 때
+        if (start >= last) {
+                alert("마지막 인덱스임")
+            } else {
+                start++;
+                $.ajax({
+                    type: "GET",
+                    url: "/api/category_list/" + link + "/study_list/" + start + "/",
+                    dataType: 'json',
+                    success: function (json) {
+                        $("#topic").empty(json.study_title);
+                        $("#topic").append(json.study_title);
+                        $("#content").empty();
+                        $("#content").append(json.study_content)
+                    }
+                })
+            }
+    }
 </script>
 
 {% endblock %}

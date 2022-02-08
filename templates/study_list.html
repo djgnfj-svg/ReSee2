@@ -18,12 +18,12 @@
           "<th scope='row'>" + json[i].id + "</th>" +
           "<td>" +
           "<li class='menu'>" +
-          "<a href='/category_list/" + link + "/study_list/"+json[i].id+"'>" + json[i].study_title + "</a>" +
+          "<a href='#' id=' edit"+json[i].id+" ' onclick='edit_click(this.id)'>" + json[i].study_title + "</a>" +
           "</li>" +
           "</td>" +
           "<td>" + json[i].updated_at + "</td>" +
           "<td>" +
-          "<a>" +
+          "<a <a href='/category_list/" + link + "/study_list/"+json[i].id+"'>" +
           "<button style='background-color:black; width: 100px; height: 35px;" +
           "color: white; border: 1px solid; border-radius: 0.5rem 0.5rem 0.5rem 0.5rem;'>" +
           "내용보기" +
@@ -40,6 +40,9 @@
   });
 </script>
 <style>
+  body{
+    background-color: rgb(233, 233, 233);
+  }
   .menu a {
     cursor: pointer;
   }
@@ -58,21 +61,35 @@
     list-style: none;
     float: left;
   }
+  #Add{
+    background-color: rgb(0, 0, 0);
+    color:white;
+    width: 100px;
+    height: 30px;
+    margin-right: 15%;
+    border:solid 1px rgb(0, 0, 0);
+    border-radius: 0.5rem .5rem .5rem .5rem;
+    text-shadow:-1px 0 #000000, 0 1px #000000, 1px 0 #000000, 0 -1px #000000;
+  }
 </style>
-<header style="font-weight: bold; font-size: 30px; margin-top: 1%; margin-left: 3%; margin-bottom: 1%;">
-  Study_list
-</header>
-<div style="text-align: right; margin-right: 20%;">
-  <button onclick="create_study()">Add</button>
+
+<header style="font-size: 20px; font-weight: bold; color: rgb(42, 41, 41);">
+  <div style="margin-left: 15%; margin-top: 1%;">
+    Study_List
+  </div>
+  </header>
+<div style="text-align: right;">
+  <button onclick="create_study()" id="Add">Add</button>
 </div>
 <div style="margin-left: 15vw; margin-right: 15vw;">
   <table class="table align-items-center table-flush">
     <thead class="thead-light">
       <tr>
-        <th scope="col">No</th>
+        <th scope="col">No.</th>
         <th scope="col">Title</th>
         <th scope="col">Last_ReSee</th>
         <th scope="col">Action</th>
+        <th scope="col">Fav</th>
       </tr>
     </thead>
     <tbody id=study_board>
@@ -83,10 +100,10 @@
 
 </div>
 <script>
-  var link = document.location.href.split("/")[4];
-  let str=clicked_id.split("clear")[1]
+  
 
   function create_study(){
+    let link = document.location.href.split("/")[4];
     location.href="/category_list/" + link + "/study_list/create"
   }
 
@@ -95,8 +112,11 @@
   }
 
   function reply_click(clicked_id) {
+      let link = document.location.href.split("/")[4];
+      let str=clicked_id.split("clear")[1];
+
       $.ajax({
-        method: "DELETE",
+        type: "delete",
         url: "/api/category_list/" + link + "/study_list/"+str+"/",
         dataType: "json",
         headers: {
