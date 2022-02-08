@@ -9,3 +9,8 @@ from django.contrib.auth.decorators import login_required
 @login_required
 def admins_view(request):
 	return render(request, "admins/admins_home.html")
+
+@admin_only
+@login_required
+def admins_list_view(request):
+	return render(request, "admins/admins_list.html")
