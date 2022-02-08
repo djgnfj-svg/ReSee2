@@ -1,5 +1,6 @@
 import time
 from django.http import Http404
+from django.shortcuts import get_object_or_404
 
 from rest_framework import viewsets
 from rest_framework import permissions
@@ -161,10 +162,13 @@ class CateReViewSet(viewsets.ModelViewSet):
 	def list(self, request, category_id):
 		# GET ALL
 		time.sleep(0.05)
-		base_time = StudyList.objects.filter(
+		temp = StudyList.objects.filter(
 			category_id=category_id, creator_id = request.user.id).order_by(
-				"-created_at").first().created_at
-		print("base_time = ", base_time)
+				"-created_at").first()
+		if temp == None:
+			raise Http404
+		else:
+			base_time = temp.created_at
 		review_list = dateCalculation(base_time, StudyList.objects.filter(category_id = category_id))
 		serializer = StudyListSerializer(review_list, many=True)
 		return Response(serializer.data)
