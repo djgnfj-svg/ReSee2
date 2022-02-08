@@ -11,8 +11,8 @@ from accounts.form import LoginForm, MemberDelForm, MemberUpdateForm, RegisterFo
 from accounts.models import MyUser
 
 # Create your views here.
-@csrf_exempt
 def login_view(request):
+    print(request)
     if request.method == "POST":
         login_form = LoginForm(request.POST)
         res_data = {}

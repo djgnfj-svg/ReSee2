@@ -18,6 +18,7 @@ class CateViewSet(viewsets.ModelViewSet):
 	queryset = Categories.objects.filter().order_by("created_at")
 	serializer_class = CateListSerializer
 	permission_classes = [permissions.IsAuthenticated]
+	# permission_classes = [permissions.IsAdminUser] admin만 가능~ 장고닌자는 필요함
 
 	def create(self, request):
 		# POST METHOD

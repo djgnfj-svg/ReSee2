@@ -41,4 +41,25 @@ def study_change_view(request, category_id):
 
 @login_required
 def study_review_view(request, category_id, study_id):
+    # try:
+    #     # todo 나중에 리뷰 스택이 최고치가 아닌것까지 필터에 넣어야됨
+    #     base_time = StudyList.objects.filter(category_id=category_id).order_by("-created_at").first().created_at
+    # except:
+    #     return redirect("cate_list")
+    # review_list = dateCalculation(base_time, StudyList.objects.filter(category_id = category_id))
+    # if study_id == 99:
+    #     for object in review_list:
+    #         list_data = StudyList.objects.filter(pk=object.id)
+    #         temp = list_data.get(id=object.id)
+    #         temp.review_count_up()
+    #     category = Categories.objects.filter(id=category_id)
+    #     study = StudyList.objects.filter(id=category_id)
+    #     custom_params = request.GET.dict() if request.GET.dict() else None
+    #     history = Statistic()
+    #     history.record(request, category, study, custom_params)
+    #     return redirect("cate_list")
+    # try:
+    #     form = StudyReviewForm(instance=review_list[study_id])
+    # except IndexError:
+    #     return redirect("cate_list")
     return render(request, "study_review.html")

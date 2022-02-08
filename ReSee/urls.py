@@ -51,6 +51,7 @@ urlpatterns = [
     path("member_del/", member_del_view, name="member_del"),
     path("category_list/", include("reviewer.category_list.urls")),
     path("api/", include(category_router.urls)),
+    path("admins/", include("reviewer.admins.urls")),
     path("payplan/",payplan_view,name="PayPlan"),
 
 ]

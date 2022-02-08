@@ -20,22 +20,22 @@ class Organization(TimeStampedModel):
 	industry = models.CharField(max_length=15, choices=Industries.choices,default=Industries.OTHERS)
 
 class MyUserManager(BaseUserManager):
-	def create_user(self, email, nickname, password=None):
+	def create_user(self, email, full_name, password=None):
 		if not email:
 			raise ValueError('Users must have an email address')
 
 		user = self.model(
 			email=MyUserManager.normalize_email(email),
-			nickname=nickname,
+			full_name=full_name,
 		)
 
 		user.set_password(password)
 		user.save(using=self._db)
 		return user
 
-	def create_superuser(self, email, nickname, password):
+	def create_superuser(self, email, full_name, password):
 		u = self.create_user(email=email,
-							nickname=nickname,
+							full_name=full_name,
 							password=password,
 							)
 		u.is_admin = True
@@ -49,7 +49,7 @@ class MyUser(AbstractBaseUser,  PermissionsMixin):
 		unique=True,
 	)
 	full_name = models.CharField(
-		u'닉네임',
+		verbose_name='full_name',
 		max_length=10,
 		blank=False,
 		unique=True,
@@ -61,7 +61,7 @@ class MyUser(AbstractBaseUser,  PermissionsMixin):
 	objects = MyUserManager()
 
 	USERNAME_FIELD = 'email'
-	REQUIRED_FIELDS = []
+	REQUIRED_FIELDS = ['full_name']
 
 	def get_full_name(self):
 		# The user is identified by their email address
