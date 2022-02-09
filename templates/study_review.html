@@ -86,7 +86,7 @@
     let first=0;
     $.ajax({
         method:"GET",
-        url : "/api/category_list/"+link+"/study_list/",
+        url : "/api/category_list/"+link+"/review",
         dataType:'json',
         success:function(json){
             start = json[0].id;

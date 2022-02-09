@@ -31,10 +31,11 @@
           "</td>" +
           "<td><li>" + json[i].created_at + "</li></td>" +
           "<td>" +
-          "<a>" +
-          "<button type='submit' id='start' >" +
+          "<a href='/category_list/"+json[i].id+"/review'>" +
+          "<button type='submit' id='start'>" +
           "시작" +
           "</button>" +
+          "</a>"+
           "<a id='clear"+json[i].id+"' href='#'  onclick='reply_click(this.id)'>"+
           "<img src= {% static 'img/clear.png' %}>"+  
           "</a>"+
@@ -174,7 +175,7 @@
                             "</td>" +
                             "<td><li>" + json[json.length - 1].created_at + "</li></td>" +
                             "<td>" +
-                              "<a>" +
+                              "<a herf='/category_list/"+json[json.length - 1].id+"/review'>" +
                                 "<button type='submit' id='start' >" +
                                   "시작" +
                                   "</button>" +
