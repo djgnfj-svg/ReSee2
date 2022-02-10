@@ -41,20 +41,21 @@
     
     $.ajax({
         method:"GET",
-        url : "/api/category_list/"+link+"/study_list/2/",
+        url : "/api/category_list/"+link+"/review/",
 
         dataType:'json',
         
         success:function(json){
-            $("#topic").append(json.study_title);
-            $("#content").append(json.study_content)
+            $("#topic").append(json[0].study_title);
+            $("#content").append(json[0].study_content)
             $("#button").append(" "+
                 "<button type='submit' onclick='prev()'>Prev</button>"+
                 "<button type='submit' onclick='next()'>Next</button>"
             )
         },
         error:function(error){
-            alert(error);
+            alert("스터디 리스트가 존재하지 않습니다.");
+            location.href = "/category_list/";
         }
     })
     
