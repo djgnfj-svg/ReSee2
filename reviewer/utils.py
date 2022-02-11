@@ -1,6 +1,8 @@
 
 from re import L
 
+from django.http import JsonResponse
+
 
 def dateCalculation(_baseDate, _StudyList):
 	return_list = []
@@ -28,3 +30,7 @@ def dateCalculation(_baseDate, _StudyList):
 	
 	return(return_list)
 
+def Msg_text(id, str):
+	res_data = {}
+	res_data[id]=str
+	return JsonResponse(res_data)

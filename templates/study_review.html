@@ -50,7 +50,8 @@
             $("#content").append(json[0].study_content)
             $("#button").append(" "+
                 "<button type='submit' onclick='prev()'>Prev</button>"+
-                "<button type='submit' onclick='next()'>Next</button>"
+                "<button type='submit' onclick='next()'>Next</button>"+
+                "<button type='submit' onclick='finish()'>Finish</button>"
             )
         },
         error:function(error){
@@ -116,6 +117,25 @@
                 })
             }
         }
+    function finish() {
+        $.ajax({
+            type: "POST",
+            url: "/category_list/" + link + "/review",
+            headers: {
+                'X-CSRFTOKEN': '{{ csrf_token }}'
+            },
+            dataType: 'json',
+            data:{
+                finish : true
+            },
+            success: function (json) {
+                alert("마지막 인덱스임")
+            },
+            error:function(request,status,error){
+                alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+            }
+        })
+    }
     function next(){
         //마지막 인덱스 값일 때
         if (start >= last) {
