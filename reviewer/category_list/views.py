@@ -62,11 +62,10 @@ def study_review_view(request, category_id):
                 list_data = StudyList.objects.filter(pk=l.id)
                 temp = list_data.get(id=l.id)
                 temp.review_count_up()
-            category = Categories.objects.filter(id=category_id)
-            study = StudyList.objects.filter(id=category_id)
-            custom_params = request.GET.dict() if request.GET.dict() else None
+            category = Categories.objects.filter(id=category_id).first()
+            study = StudyList.objects.filter(id=category_id).first()
             history = Statistic()
-            history.record(request, category, study, custom_params)
+            history.record(request, category, study)
             return JsonResponse(Msg_text("msg","ok")) 
         else:
             return JsonResponse(Msg_text("error","temp error"))

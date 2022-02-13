@@ -55,7 +55,7 @@ class Statistic(TimeStampedModel):
 	country_name = models.CharField(max_length=100, default="UNKNOWN")
 	custom_parms = models.JSONField(null=True)
 
-	def record(self, request, category:Categories, study:StudyList, params: Dict):
+	def record(self, request, category:Categories, study:StudyList):
 		self.category = category
 		self.study = study
 		self.ip = request.META["REMOTE_ADDR"]
@@ -69,7 +69,6 @@ class Statistic(TimeStampedModel):
 		)
 		self.device_os = request.user_agent.os.family
 		t = TrackingParams.get_tracking_params(category.id)
-		self.custom_parms = dict_slice(dict_filter(params, t), 5)
 		
 		try: 
 			country = GeoIP2().country(self.ip)

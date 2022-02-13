@@ -33,4 +33,4 @@ def dateCalculation(_baseDate, _StudyList):
 def Msg_text(id, str):
 	res_data = {}
 	res_data[id]=str
-	return JsonResponse(res_data)
+	return res_data

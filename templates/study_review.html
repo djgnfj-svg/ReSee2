@@ -49,9 +49,12 @@
             $("#topic").append(json[0].study_title);
             $("#content").append(json[0].study_content)
             $("#button").append(" "+
-                "<button type='submit' onclick='prev()'>Prev</button>"+
-                "<button type='submit' onclick='next()'>Next</button>"+
-                "<button type='submit' onclick='finish()'>Finish</button>"
+                //2번째 인덱스 값일때 표현
+                "<button class = 'prev' type='submit' onclick='prev()'>Prev</button>"+
+                //마지막 값일때 없애기
+                "<button class = 'next' type='submit' onclick='next()'>Next</button>"+
+                //마지막 인덱스 값일때 표현
+                "<button class = 'last' type='submit' onclick='finish()'>Finish</button>"
             )
         },
         error:function(error){
@@ -100,8 +103,17 @@
     });
     
     function prev() {
-        if (start <= first) {
-            alert("첫번째 인덱스임")
+        if (start <= first  ) {
+            $.ajax({
+                    type: "GET",
+                    url: "/api/category_list/" + link + "/study_list/" + start + "/",
+                    dataType: 'json',
+                    success: function (json) {
+                        $(".prev").animate({
+                            display : 'none'
+                        });
+                    }
+                });
             } else {
                 start--;
                 $.ajax({
@@ -138,8 +150,17 @@
     }
     function next(){
         //마지막 인덱스 값일 때
-        if (start >= last) {
-                alert("마지막 인덱스임")
+        if (start >= last -1) {
+            $.ajax({
+                    type: "GET",
+                    url: "/api/category_list/" + link + "/study_list/" + start + "/",
+                    dataType: 'json',
+                    success: function (json) {
+                        $(".next").animate({
+                            disabled : 'true'
+                        });
+                    }
+                });
             } else {
                 start++;
                 $.ajax({
