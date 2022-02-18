@@ -170,7 +170,7 @@
                           "</a>" +
                           "</li>" +
                           "<a>" +
-                            "<img src= {% static 'img/edit.png' %}'>" +
+                            "<img src= {% static 'img/edit.png' %}>" +
                             "</a>" +
                             "</td>" +
                             "<td><li>" + json[json.length - 1].created_at + "</li></td>" +
@@ -209,6 +209,9 @@
   
   function reply_click(clicked_id) {
     let str=clicked_id.split("clear")[1]
+    var _delete = confirm("정말 삭제하시겟습니까?");
+
+    if(_delete){
     $.ajax({
       method: "DELETE",
       url: "/api/category_list/" + str + "/",
@@ -224,6 +227,9 @@
           alert(" error = " + error); // 실패 시 처리
         },
       });
+    }else{
+      alert("삭제 취소");
+    }
     }
     
     

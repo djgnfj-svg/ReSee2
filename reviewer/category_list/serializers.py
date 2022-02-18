@@ -27,7 +27,8 @@ class CateListSerializer(serializers.ModelSerializer):
 
 class StudyListSerializer(serializers.ModelSerializer):
 	creator = UserSerializer(read_only=True)
-
+	
+ 
 	class Meta:
 		model = StudyList
 		fields = "__all__"

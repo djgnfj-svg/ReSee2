@@ -113,24 +113,28 @@
 
   function reply_click(clicked_id) {
       let link = document.location.href.split("/")[4];
-      let str=clicked_id.split("clear")[1];
+      let str = clicked_id.split("clear")[1];
+      var _delete = confirm("정말 삭제하시겟습니까?");
 
-      $.ajax({
-        type: "delete",
-        url: "/api/category_list/" + link + "/study_list/"+str+"/",
-        dataType: "json",
-        headers: {
-          'X-CSRFTOKEN': '{{ csrf_token }}'
-        },
-        success: function (json) {
-          alert("삭제 성공!");
-          reload();
-        },
-        error: function ( error ) {
-          alert(" error = " + error); // 실패 시 처리
-        },
-    });
+      if(_delete){
+        $.ajax({
+          type: "delete",
+          url: "/api/category_list/" + link + "/study_list/"+str+"/",
+          dataType: "json",
+          headers: {
+            'X-CSRFTOKEN': '{{ csrf_token }}'
+          },
+          success: function (json) {
+            alert("삭제 성공!");
+            reload();
+          },
+          error: function ( error ) {
+            alert(" error = " + error); // 실패 시 처리
+          },
+      });
+      }else{
+        alert("삭제 취소");
   }
-  
+}
 </script>
 {% endblock %}

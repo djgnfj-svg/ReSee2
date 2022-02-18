@@ -5,163 +5,176 @@
 
 {% endblock %}
 {% block content %}
+
 <style>
-    #topic_title{
+    #topic_title {
         margin-left: 20px;
         font-size: 20px;
         font-family: sans-serif;
         font-weight: bold;
-        padding:10px 10px 10px 10px;
-    }#content_title{
-        margin-left: 20px;
-        font-size: 20px;
-        font-family: sans-serif;
-        font-weight: bold;
-        
+        padding: 10px 10px 10px 10px;
     }
-    #topic{
+
+    #content_title {
+        margin-left: 20px;
+        font-size: 20px;
+        font-family: sans-serif;
+        font-weight: bold;
+
+    }
+
+    #topic {
         border: 1px solid black;
         width: 30vw;
         border-radius: 0.5rem 0.5rem 0.5rem 0.5rem;
-        padding:10px 10px 10px 10px;
+        padding: 10px 10px 10px 10px;
         margin-left: 20px;
     }
-    #content{
+
+    #content {
         border: 1px solid black;
-        width : 90vw;
+        width: 90vw;
         height: 30vw;
         border-radius: 0.5rem 0.5rem 0.5rem 0.5rem;
-        border-radius: 0.5rem 0.5rem 0.5rem 0.5rem;
-        padding:10px 10px 10px 10px;
+        padding: 10px 10px 10px 10px;
         margin-left: 20px;
     }
+    /* prev,next,finish 버튼 */
+    input{
+        position : relative;
+        left: 38%;
+        width: 4%;
+        border: solid 1px none;
+        border-radius: 0.5rem 0.5rem 0.5rem 0.5rem;
+        margin-top: 1%;
+        background-color: white;
+        margin: 0.5rem;
+    }
+    /* 날짜 */
+    #date{
+        position: absolute;
+        left:75%;
+        font-size:17px;
+        
+    }
+    
 </style>
+
 <script>
     var link = document.location.href.split("/")[4];
-    
-    $.ajax({
-        method:"GET",
-        url : "/api/category_list/"+link+"/review/",
 
-        dataType:'json',
-        
-        success:function(json){
+    $.ajax({
+        method: "GET",
+        url: "/api/category_list/" + link + "/review/",
+
+        dataType: 'json',
+
+        success: function (json) {
             $("#topic").append(json[0].study_title);
             $("#content").append(json[0].study_content)
-            $("#button").append(" "+
-                //2번째 인덱스 값일때 표현
-                "<button class = 'prev' type='submit' onclick='prev()'>Prev</button>"+
-                //마지막 값일때 없애기
-                "<button class = 'next' type='submit' onclick='next()'>Next</button>"+
-                //마지막 인덱스 값일때 표현
-                "<button class = 'last' type='submit' onclick='finish()'>Finish</button>"
+            $("#button").append(" " +
+                "<input class = 'prev' id='prev' type='button' disabled onclick='prev()' value='Prev'>" + 
+                "<input class = 'finish' id='finish' type='submit' style='visibility : hidden' onclick='finish()' value ='Finish'>"+
+                "<input class = 'next' id='next' type='button' onclick='next()' value='Next'>" 
             )
+            $("#date").append("Date : "+json[0].created_at)
         },
-        error:function(error){
+        error: function (error) {
             alert("스터디 리스트가 존재하지 않습니다.");
             location.href = "/category_list/";
         }
     })
     
+    
 </script>
 
 </head>
-    <div>
-        <div id="study">
-            <div>
-                <p id="topic_title">Study Topic</p>
-                <div id="topic">
-    
-                </div>
+<div>
+    <div id="study">
+        <div>
+            <p id="topic_title">Study Topic</p>
+            <div id="topic">
+
             </div>
-            <div>
-                <p id="content_title">Study_Content</p>
-                </p>
-                <div id="content">
-                </div>
+        </div>
+        <div>
+            <p id="date">
+                
+            </p>
+            <p id="content_title">Study_Content</p>
+            </p>
+            <div id="content">
+            </div>
         </div>
         <div id="button">
-            
+
         </div>
-<script>
-    //겟으로 마지막카테고리를 가져온다?
-    var link = document.location.href.split("/")[4];
-    let start=0;//첫번째 id값
-    let last=0;//마지막 id값
-    let first=0;
-    $.ajax({
-        method:"GET",
-        url : "/api/category_list/"+link+"/review",
-        dataType:'json',
-        success:function(json){
-            start = json[0].id;
-            first = json[0].id;
-            for(let i=0; i<json.length; i++){
-                last = json[i].id;
-            }
-        }
-    });
-    
-    function prev() {
-        if (start <= first  ) {
+        <script>
+            //겟으로 마지막카테고리를 가져온다?
+            var link = document.location.href.split("/")[4];
+            let start = 0;//시작 id값
+            let last = 0;//마지막 id값
+            let first = 0;//첫번째 id값
+            
+
             $.ajax({
-                    type: "GET",
-                    url: "/api/category_list/" + link + "/study_list/" + start + "/",
-                    dataType: 'json',
-                    success: function (json) {
-                        $(".prev").animate({
-                            display : 'none'
-                        });
+                method: "GET",
+                url: "/api/category_list/" + link + "/review",
+                dataType: 'json',
+                success: function (json) {
+                    start = json[0].id;
+                    first = json[0].id;
+                    for (let i = 0; i < json.length; i++) {
+                        last = json[i].id;
                     }
-                });
-            } else {
-                start--;
-                $.ajax({
-                    type: "GET",
-                    url: "/api/category_list/" + link + "/study_list/"+start+"/",
-                    dataType: 'json',
-                    success: function (json) {
-                        $("#topic").empty();
-                        $("#topic").append(json.study_title);
-                        $("#content").empty();
-                        $("#content").append(json.study_content)
+                    if(start==last){
+                        var target = document.getElementById('next').disabled=true;
+                        // finiush 버튼 활성화
+                        $(".finish").css({
+                            "visibility": "visible"
+                        })
                     }
-                })
-            }
-        }
-    function finish() {
-        $.ajax({
-            type: "POST",
-            url: "/category_list/" + link + "/review",
-            headers: {
-                'X-CSRFTOKEN': '{{ csrf_token }}'
-            },
-            dataType: 'json',
-            data:{
-                finish : true
-            },
-            success: function (json) {
-                alert("마지막 인덱스임")
-            },
-            error:function(request,status,error){
-                alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-            }
-        })
-    }
-    function next(){
-        //마지막 인덱스 값일 때
-        if (start >= last -1) {
-            $.ajax({
-                    type: "GET",
-                    url: "/api/category_list/" + link + "/study_list/" + start + "/",
-                    dataType: 'json',
-                    success: function (json) {
-                        $(".next").animate({
-                            disabled : 'true'
-                        });
-                    }
-                });
-            } else {
+                }
+            });
+            function prev() {
+                    start--;
+                    $.ajax({
+                        type: "GET",
+                        url: "/api/category_list/" + link + "/review/" + start + "",
+                        dataType: 'json',
+                        success: function (json) {
+                            $("#topic").empty(json.study_title);
+                            $("#topic").append(json.study_title);
+                            $("#content").empty();
+                            $("#content").append(json.study_content);
+                            $("#date").empty(json.created_at);
+                            $("#date").append(json.created_at);
+                            $(".finish").css({
+                                "visibility" : "hidden"
+                            })
+                            if (start <= first) {
+                                let target = document.getElementById('prev').disabled=true;
+                            } else {
+                                let target = document.getElementById('next').disabled=false;
+                        }
+
+                        },
+                        error: function (request, status, error) {
+                            alert("asd");
+                        }
+                    })
+                }
+
+            function next() {
+                //마지막 인덱스 값일 때
+                if (start >= last -1) {
+                    //Next버튼 비활성화
+                    let target = document.getElementById('next').disabled=true;
+                    // finiush 버튼 활성화
+                    $(".finish").css({
+                        "visibility": "visible"
+                    })
+                }
                 start++;
                 $.ajax({
                     type: "GET",
@@ -171,11 +184,35 @@
                         $("#topic").empty(json.study_title);
                         $("#topic").append(json.study_title);
                         $("#content").empty();
-                        $("#content").append(json.study_content)
+                        $("#content").append(json.study_content);
+                        $("#date").empty(json.created_at);
+                        $("#date").append(json.created_at);
+                        let target = document.getElementById('prev').disabled=false;
                     }
                 })
             }
-    }
-</script>
 
-{% endblock %}
+            function finish() {
+                $.ajax({
+                    type: "POST",
+                    url: "/category_list/" + link + "/review",
+                    headers: {
+                        'X-CSRFTOKEN': '{{ csrf_token }}'
+                    },
+                    dataType: 'json',
+                    data: {
+                        finish: true
+                    },
+                    success: function (json) {
+                        alert("복습 완료 !")
+                        location.href="/category_list"
+                    },
+                    error: function (request, status, error) {
+                        alert("code:" + request.status +"\n" + "error:" + error);
+                    }
+                })
+            }
+            
+        </script>
+
+        {% endblock %}

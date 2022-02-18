@@ -64,8 +64,8 @@ def study_review_view(request, category_id):
                 temp.review_count_up()
             category = Categories.objects.filter(id=category_id).first()
             study = StudyList.objects.filter(id=category_id).first()
-            history = Statistic()
-            history.record(request, category, study)
+            # history = Statistic()
+            # history.record(request, category, study)
             return JsonResponse(Msg_text("msg","ok")) 
         else:
             return JsonResponse(Msg_text("error","temp error"))
