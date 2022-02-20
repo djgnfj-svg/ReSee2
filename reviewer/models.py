@@ -1,3 +1,4 @@
+from asyncio.windows_events import NULL
 from typing import Dict
 
 from django.db import models
@@ -45,8 +46,8 @@ class Statistic(TimeStampedModel):
 		PC = "pc"
 		MOBILE = "mobile"
 		TABLET = "tablet"
-	category = models.ForeignKey(Categories, on_delete=models.CASCADE)
-	study = models.ForeignKey(StudyList, on_delete=models.CASCADE)
+	category = models.ForeignKey(Categories, on_delete=models.CASCADE, null=True)
+	study = models.ForeignKey(StudyList, on_delete=models.CASCADE, null=True)
 	ip = models.CharField(max_length=15)
 	web_browser = models.CharField(max_length=50)
 	device = models.CharField(max_length=6, choices=ApproachDevice.choices)
