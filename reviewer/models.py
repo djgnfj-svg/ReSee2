@@ -1,6 +1,3 @@
-from asyncio.windows_events import NULL
-from typing import Dict
-
 from django.db import models
 from django.contrib.gis.geoip2 import GeoIP2
 

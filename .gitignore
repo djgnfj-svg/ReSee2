@@ -164,7 +164,9 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
+sqlite3.exe
 secrets.json
 migrations
 migrations/*
+
 # End of https://www.toptal.com/developers/gitignore/api/django
