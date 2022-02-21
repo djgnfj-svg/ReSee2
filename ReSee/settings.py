@@ -37,10 +37,10 @@ def get_secret(setting):
 SECRET_KEY = get_secret("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = int(os.environ.get("DEBUG",1))
+DEBUG = int(os.environ.get("DEBUG", 1))
 
 if os.environ.get("DJANGO_ALLOWED_HOSTS"):
-    ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED").split(' ')
+    ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(' ')
 else:
     ALLOWED_HOSTS = []
 
@@ -106,11 +106,16 @@ WSGI_APPLICATION = 'ReSee.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': os.environ.get("SQL_ENGINE",'django.db.backends.sqlite3'),
+        'NAME': os.environ.get("SQL_DATABASE", os.path.join(BASE_DIR / 'db.sqlite3')),
+        'USER': os.environ.get("SQL_USER", "user"),
+        "PASSWORD" : os.environ.get("SQL_PASSWORD", "password"),
+        "HOST": os.environ.get("SQL_HOST",'localhost'),
+        "PORT": os.environ.get("SQL_PORT", "5432")
     }
 }
 
+print(DATABASES)
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators

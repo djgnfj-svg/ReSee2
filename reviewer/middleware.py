@@ -1,6 +1,5 @@
 from reviewer.models import BackOfficeLogs
 from accounts.models import MyUser
-from urllib.parse import unquote
 import json
 
 
