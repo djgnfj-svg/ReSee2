@@ -42,9 +42,6 @@
           </li>
           {% else %}
           <li class="nav-item">
-            <a class="nav-link" href="#">Pricing</a>
-          </li>
-          <li class="nav-item">
             <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
           </li>
           {% endif%}
@@ -67,12 +64,8 @@
                 </li>
               </ul>
             {% else %}
-
-          <li  id="login_temp">
-            <a class="nav-link" href="{% url 'admin:index' %}">Admin</a>
           <li  id="login_temp">
             <a class="nav-link" href="{% url 'login'  %}">Sign Up</a>
-          </li>
           </li>
           {% endif %}
         </ul>

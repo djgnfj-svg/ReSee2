@@ -5,34 +5,44 @@
 {% endblock %}
 {% block content %}
 
+<!-- <form id="login" action="" class="input-group-adon" method="post">
 
+    {% csrf_token %}
+    {{ login_form.email }}
+    {{ login_form.password }}
+    <input type="checkbox" class="checkbox"><span>Remember Password</span>
+    <button class="submit" name="login" action="home">Login</button>
+</form> -->
+
+{% csrf_token %}
 <form id="login" action="" class="input-group-adon" method="post">
 <div id="main_content">
     <div class="mb-3 row" id="user_info">
         <div id="main_icon">
             <img src="{% static 'img/ReSee_image.png' %}" style="width:100px;">
         </div>
+            {% if msg %}
+            <p class="text-center text-sm text-danger">{{ msg }}</p>
+            {% endif %}
             <div class="mb-1">
                 <label for="staticEmail" style="font-weight: bold; font-size: 18px; ">이메일</label>
             </div>
             <div>
-                <input type="text" id="staticEmail" name="email"
-                    style="width:90%; height: 36.5px; padding : 9.75px 13px; margin-bottom: 2%;">
+                {{ login_form.email }}
             </div>
             <div class="mb-1">
                 <label for="inputPassword" style="font-weight: bold; font-size: 18px;">패스워드</label>
             </div>
             <div>
-                <input type="password" id="inputPassword" name="password"
-                    style="width:90%; height: 36.5px; padding : 9.75px 13px;">
+                {{ login_form.password }}
             </div>
             <div>
                 <div>
-                    <button type="sumit" id="login_button" onclick="location.href='/login'">로그인</button>
+                    <button type="sumit" id="login_button">로그인</button>
                 </div>
                 <div style="margin-bottom: 3%;  ">
-                    <a href="#" style="margin-bottom: 3%; color:black; font-size: 15px; text-align: left;"> 빡대가리십니까
-                        ?
+                    <a href="#" style="margin-bottom: 3%; color:black; font-size: 15px; text-align: left;">
+                        빡대가리십니까?
                     </a>
                 </div>
                 <div>

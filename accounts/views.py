@@ -1,35 +1,44 @@
-import json
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib import messages
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.hashers import make_password
-from pydantic import Json
 
 from accounts.form import LoginForm, MemberDelForm, MemberUpdateForm, RegisterForm
 from accounts.models import MyUser
 
 # Create your views here.
+@csrf_exempt
 def login_view(request):
-    print(request)
+    login_form = LoginForm()
+
+    #중복됨 계선 필요
+    for visible in login_form.visible_fields():
+        visible.field.widget.attrs["class"] = "form-control"
+
     if request.method == "POST":
         login_form = LoginForm(request.POST)
-        res_data = {}
-        if not login_form.is_valid():
-            return JsonResponse(login_form.errors.as_json(), safe=False)
-        try :
-            user = MyUser.objects.get(email=login_form.cleaned_data.get("email"))
-        except MyUser.DoesNotExist:
-            res_data['error'] = "잘못된 이메일 또는 패스워드 입니다."
-            return JsonResponse(res_data)
-        else :
-            if user.check_password(login_form.cleaned_data.get("password")):
-                login(request, user)
-                return redirect("home")
-        return redirect("home")
+
+        for visible in login_form.visible_fields():
+            visible.field.widget.attrs["class"] = "form-control"
+
+        if login_form.is_valid():
+            temp_email = login_form.cleaned_data.get("email")
+            temp_password = login_form.cleaned_data.get("password")
+            try :
+                user = MyUser.objects.get(email=temp_email)
+            except MyUser.DoesNotExist:
+                pass
+            else:
+                if user.check_password(temp_password):
+                    login(request, user)
+                    return redirect("home")
+        else:
+            msg = f"올바르지 않은 데이터 입니다."
+            return render(request, "login.html", {"login_form" :login_form, "msg" : msg})
     else :
-        return render(request, "login.html")
+        return render(request, "login.html", {"login_form" :login_form})
 
 def logout_view(request):
     if request.session.get('user'):
@@ -39,25 +48,31 @@ def logout_view(request):
 
 @csrf_exempt
 def register_view(request):
+    register_form = RegisterForm()
+
     if request.method == 'POST':
-        register = RegisterForm(request.POST)
-        useremail = request.POST.get('useremail',None)
-        res_data = {}
-        try:
-            user = MyUser.objects.get(email=useremail)
-            if user:
-                res_data['error'] = 'This email is already subscribed.'
-                print(type(register.errors.as_json()))
-                return JsonResponse(res_data)
-        except MyUser.DoesNotExist:
-            if register.is_valid():
-                login(request, register.save())
-                return redirect("home")
-            return JsonResponse(register.errors.as_json(), safe=False)
-            # session 생성
-            # user = MyUser.objects.get(email=useremail)
-            # request.session['user'] = user.id
-    return render(request,'register.html')
+        register_form = RegisterForm(request.POST)
+
+        for visible in register_form.visible_fields():
+            visible.field.widget.attrs["class"] = "form-control"
+
+        if register_form.is_valid():
+            useremail = request.POST.get('useremail',None)
+            try:
+                user = MyUser.objects.get(email=useremail)
+                if user:
+                    return redirect("login")
+            except MyUser.DoesNotExist:
+                if register_form.is_valid():
+                    login(request, register_form.save())
+                    return redirect("home")
+        else:
+            msg = f"올바르지 않은 데이터 입니다."
+            return render(request,'register.html', {"register_form" : register_form, "msg" : msg})
+    else:
+        for visible in register_form.visible_fields():
+            visible.field.widget.attrs["class"] = "form-control"
+        return render(request,'register.html', {"register_form" :register_form})
 
 @csrf_exempt
 @login_required
