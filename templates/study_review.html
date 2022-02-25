@@ -39,29 +39,52 @@
         padding: 10px 10px 10px 10px;
         margin-left: 20px;
     }
+
+    .btn{
+        width: 85%;
+        text-align: center;
+    }
+    
     /* prev,next,finish 버튼 */
-    input{
-        position : relative;
-        left: 38%;
-        width: 4%;
+    input {
+        position: relative;
+        width: 70px;
         border: solid 1px none;
         border-radius: 0.5rem 0.5rem 0.5rem 0.5rem;
         margin-top: 1%;
         background-color: white;
         margin: 0.5rem;
     }
+
     /* 날짜 */
-    #date{
+    #date {
         position: absolute;
-        left:75%;
-        font-size:17px;
-        
+        left: 75%;
+        font-size: 17px;
+
     }
-    
 </style>
 
 <script>
-    var link = document.location.href.split("/")[4];
+    var link = document.location.href.split("/")[4]; //CATEGORY_ID
+
+    $(document).ready(function(){
+        $(window).resize(function (){
+            // width값을 가져오기
+            var width_size = window.outerWidth;
+            
+            // 800 이하인지 if문으로 확인
+            if (width_size <= 800) {
+              $(".btn").css({
+                  "width" : "100%"
+              })
+            }else{
+                $(".btn").css({
+                    "width" : "85%"
+                })
+            }
+          })
+        })
 
     $.ajax({
         method: "GET",
@@ -73,19 +96,21 @@
             $("#topic").append(json[0].study_title);
             $("#content").append(json[0].study_content)
             $("#button").append(" " +
-                "<input class = 'prev' id='prev' type='button' disabled onclick='prev()' value='Prev'>" + 
-                "<input class = 'finish' id='finish' type='submit' style='visibility : hidden' onclick='finish()' value ='Finish'>"+
-                "<input class = 'next' id='next' type='button' onclick='next()' value='Next'>" 
+                "<div class='btn'>"+
+                "<input class = 'prev' id='prev' type='button' disabled onclick='prev()' value='Prev'>" +
+                "<input class = 'finish' id='finish' type='submit' style='visibility : hidden' onclick='finish()' value ='Finish'>" +
+                "<input class = 'next' id='next' type='button' onclick='next()' value='Next'>"+
+                "</div>"
             )
-            $("#date").append("Date : "+json[0].created_at)
+            $("#date").append("Date : " + json[0].created_at)
         },
         error: function (error) {
             alert("스터디 리스트가 존재하지 않습니다.");
             location.href = "/category_list/";
         }
     })
-    
-    
+
+
 </script>
 
 </head>
@@ -99,7 +124,7 @@
         </div>
         <div>
             <p id="date">
-                
+
             </p>
             <p id="content_title">Study_Content</p>
             </p>
@@ -115,7 +140,7 @@
             let start = 0;//시작 id값
             let last = 0;//마지막 id값
             let first = 0;//첫번째 id값
-            
+
 
             $.ajax({
                 method: "GET",
@@ -127,8 +152,8 @@
                     for (let i = 0; i < json.length; i++) {
                         last = json[i].id;
                     }
-                    if(start==last){
-                        var target = document.getElementById('next').disabled=true;
+                    if (start == last) {
+                        var target = document.getElementById('next').disabled = true;
                         // finiush 버튼 활성화
                         $(".finish").css({
                             "visibility": "visible"
@@ -137,44 +162,48 @@
                 }
             });
             function prev() {
-                    start--;
-                    $.ajax({
-                        type: "GET",
-                        url: "/api/category_list/" + link + "/review/" + start + "",
-                        dataType: 'json',
-                        success: function (json) {
-                            $("#topic").empty(json.study_title);
-                            $("#topic").append(json.study_title);
-                            $("#content").empty();
-                            $("#content").append(json.study_content);
-                            $("#date").empty(json.created_at);
-                            $("#date").append(json.created_at);
-                            $(".finish").css({
-                                "visibility" : "hidden"
-                            })
-                            if (start <= first) {
-                                let target = document.getElementById('prev').disabled=true;
-                            } else {
-                                let target = document.getElementById('next').disabled=false;
+                start--;
+                $.ajax({
+                    type: "GET",
+                    url: "/api/category_list/" + link + "/review/" + start + "",
+                    dataType: 'json',
+                    success: function (json) {
+                        $("#topic").empty(json.study_title);
+                        $("#topic").append(json.study_title);
+                        $("#content").empty();
+                        $("#content").append(json.study_content);
+                        $("#date").empty(json.created_at);
+                        $("#date").append(json.created_at);
+                        $(".finish").css({
+                            "visibility": "hidden"
+                        })
+                        if (json.study_title == "") {
+                            prev();
                         }
-
-                        },
-                        error: function (request, status, error) {
-                            alert("asd");
+                        if (start <= first) {
+                            let target = document.getElementById('prev').disabled = true;
+                            let next = document.getElementById('next').disabled = false;
+                        } else {
+                            let target = document.getElementById('next').disabled = false;
                         }
-                    })
-                }
+                    },
+                    error: function (request, status, error) {
+                        alert("error");
+                    }
+                })
+            }
 
             function next() {
                 //마지막 인덱스 값일 때
-                if (start >= last -1) {
+                if (start >= last - 1) {
                     //Next버튼 비활성화
-                    let target = document.getElementById('next').disabled=true;
+                    let target = document.getElementById('next').disabled = true;
                     // finiush 버튼 활성화
                     $(".finish").css({
                         "visibility": "visible"
                     })
                 }
+
                 start++;
                 $.ajax({
                     type: "GET",
@@ -187,7 +216,10 @@
                         $("#content").append(json.study_content);
                         $("#date").empty(json.created_at);
                         $("#date").append(json.created_at);
-                        let target = document.getElementById('prev').disabled=false;
+                        let target = document.getElementById('prev').disabled = false;
+                        if (json.study_title == "") {
+                            next();
+                        }
                     }
                 })
             }
@@ -205,14 +237,14 @@
                     },
                     success: function (json) {
                         alert("복습 완료 !")
-                        location.href="/category_list"
+                        location.href = "/category_list"
                     },
                     error: function (request, status, error) {
-                        alert("code:" + request.status +"\n" + "error:" + error);
+                        alert("code:" + request.status + "\n" + "error:" + error);
                     }
                 })
             }
-            
+
         </script>
 
         {% endblock %}
